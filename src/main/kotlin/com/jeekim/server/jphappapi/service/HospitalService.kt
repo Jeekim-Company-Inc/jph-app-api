@@ -2,19 +2,19 @@ package com.jeekim.server.jphappapi.service
 
 import com.jeekim.server.jphappapi.exception.ErrorCode
 import com.jeekim.server.jphappapi.exception.JphBizException
+import com.jeekim.server.jphappapi.repository.HospitalRepository
+import com.jeekim.server.jphappapi.utils.JwtUtils
+import org.bouncycastle.asn1.x500.style.RFC4519Style.name
 import org.springframework.stereotype.Service
 
 @Service
 class HospitalService(
-    private val hospitalRepository: HospitalRepository
+    private val hospitalRepository: HospitalRepository,
 ) {
-    fun check(name: String, code: Long) {
-        val hospital = hospitalRepository.findByName(name) ?: throw JphBizException(ErrorCode.HOSPITAL_NOT_FOUND)
-        if(hospital.code != code) {
-            throw JphBizException(ErrorCode.HOSPITAL_CODE_NOT_MATCH)
-        }
-        if(!hospital.allowed) {
-            throw JphBizException(ErrorCode.HOSPITAL_NOT_ALLOWED)
-        }
+    fun login(
+        id: String,
+        code: Int
+    ) {
+        hospitalRepository.findByIdAndCode(id, code) ?: throw JphBizException(ErrorCode.HOSPITAL_CODE_NOT_MATCH)
     }
 }
