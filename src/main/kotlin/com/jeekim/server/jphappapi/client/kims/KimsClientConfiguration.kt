@@ -6,14 +6,15 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
-@Configuration
-open class KimsClientConfiguration {
+class KimsClientConfiguration {
     @Bean
-    open fun kimsClientRequestInterceptor(
-        @Value("\${infotech.apiKey}") apiKey: String,
+    fun kimsClientRequestInterceptor(
+        @Value("\${kims.username}") username: String,
     ): RequestInterceptor {
+        val toEncode = "$username:"
+        val encoded = "Basic " + java.util.Base64.getEncoder().encodeToString(toEncode.toByteArray())
         return RequestInterceptor { requestTemplate: RequestTemplate ->
-            requestTemplate.header("api-cloud-key", apiKey)
+            requestTemplate.header("Authorization", encoded)
         }
     }
 }

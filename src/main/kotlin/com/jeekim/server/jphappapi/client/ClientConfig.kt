@@ -18,14 +18,13 @@ class ClientConfig {
         @Value("\${naver.storage.access-key}") accessKey: String,
         @Value("\${naver.storage.secret-key}") secretKey: String,
         @Value("\${naver.storage.regionName}") regionName: String,
-        @Value("\${naver.storage.bucketName}") bucketName: String,
-        @Value("\${naver.storage.urlPrefix}") resourceUrlPrefix: String
+        @Value("\${naver.storage.bucketName}") bucketName: String
     ): BucketAdapter {
         val amazonS3Client: AmazonS3Client = AmazonS3ClientBuilder.standard()
             .withEndpointConfiguration(AwsClientBuilder.EndpointConfiguration(endPoint, regionName))
             .withCredentials(AWSStaticCredentialsProvider(BasicAWSCredentials(accessKey, secretKey)))
             .build() as AmazonS3Client
 
-        return BucketAdapter(amazonS3Client, bucketName, resourceUrlPrefix)
+        return BucketAdapter(amazonS3Client, bucketName)
     }
 }

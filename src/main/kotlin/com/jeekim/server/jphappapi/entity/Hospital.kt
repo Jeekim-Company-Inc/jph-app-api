@@ -1,27 +1,17 @@
 package com.jeekim.server.jphappapi.entity
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.Table
 
 @Entity
 @Table(name = "hospital")
-data class Hospital (
+data class Hospital(
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long?,
-
-    @Column(name = "name", nullable = false)
-    var name: String,
-
-    @Column(name = "code", nullable = false)
-    var code: Long,
-
-    @Column(name = "allowed", nullable = false)
-    var allowed: Boolean,
-
+    val id: String,
+    val name: String,
+    val code: Int,
 )

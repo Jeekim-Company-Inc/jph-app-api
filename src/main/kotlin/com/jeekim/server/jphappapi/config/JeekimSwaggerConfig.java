@@ -14,20 +14,7 @@ import org.springframework.http.HttpHeaders;
 public class JeekimSwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
-
-        String key = "Access Token (Bearer)";
-        SecurityScheme accessTokenSecurityScheme = new SecurityScheme()
-                .type(SecurityScheme.Type.HTTP)
-                .scheme("bearer")
-                .bearerFormat("JWT")
-                .in(SecurityScheme.In.HEADER)
-                .name(HttpHeaders.AUTHORIZATION);
-        Components components = new Components()
-                .addSecuritySchemes(key, accessTokenSecurityScheme);
-
         return new OpenAPI()
-                .addSecurityItem(new SecurityRequirement().addList(key))
-                .components(components)
                 .info(apiInfo());
     }
 
