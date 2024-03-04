@@ -1,5 +1,6 @@
 package com.jeekim.server.jphappapi.config
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition
 import io.swagger.v3.oas.annotations.servers.Server
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.info.Info
@@ -27,7 +28,7 @@ class JeekimSwaggerConfig {
                             .description("Hospital Key Authentication")
                     )
             )
-            .servers(listOf(io.swagger.v3.oas.models.servers.Server().url("https://dev-jph.server-jeekim.com")))
+            .servers(listOf(io.swagger.v3.oas.models.servers.Server().url("https://dev-jph.jeekim-server.com")))
     }
 
     private fun apiInfo(): Info = Info()
