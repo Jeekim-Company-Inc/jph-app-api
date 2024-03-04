@@ -29,7 +29,6 @@ class DrugService(
         return infotechAdapter.getMyDrugHistoriesByEasyLogin(easyLoginRequest)
     }
 
-
     fun sendSms(request: SmsSendRequest): SmsSendResponse {
         val smsSendRequest = InfotechSmsRequest.of(request)
         return infotechAdapter.sendSms(smsSendRequest)
@@ -49,15 +48,8 @@ class DrugService(
     }
 
     fun sendMyDrugHistoriesByApi(request: SendMyDrugHistoriesRequest){
-        runCatching {
-            logger().info("KIMS 약 처방 내역 전송 요청")
-            val sendRequest = request.toCommandList("PAKUAS")
-            logger().info("KIMS 약 처방 내역 전송 요청 - sendRequest: {}", sendRequest)
-            kimsAdapter.sendMyDrugHistories(sendRequest)
-        }.onFailure {
-            logger().error("KIMS 약 처방 내역 전송 실패: {}", it.message)
-            throw it
-        }
+        val sendRequest = request.toCommandList("PAKUAS")
+        kimsAdapter.sendMyDrugHistories(sendRequest)
     }
     fun sendMyDrugHistoriesByOcr(request: OcrCheckedRequest){
         val sendRequest = request.toCommand("PAKUAS")

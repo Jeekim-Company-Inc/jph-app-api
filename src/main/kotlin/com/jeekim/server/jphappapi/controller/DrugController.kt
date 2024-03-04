@@ -87,7 +87,6 @@ class DrugController(
     )
     @PostMapping("/api/send")
     fun sendMyDrugHistoriesByApi(@RequestBody request: SendMyDrugHistoriesRequest) {
-        logger().info("KIMS 약 처방 내역 전송 요청: {}", request)
         drugService.sendMyDrugHistoriesByApi(request)
     }
     @Operation(summary = "내가 먹은 약 KIMS 전송 - OCR")
