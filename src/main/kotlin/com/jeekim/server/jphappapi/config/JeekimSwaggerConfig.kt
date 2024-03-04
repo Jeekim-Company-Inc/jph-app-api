@@ -9,9 +9,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@Server(
-    url = "https://dev-jph.server-jeekim.com",
-)
 class JeekimSwaggerConfig {
 
     @Bean
@@ -30,6 +27,7 @@ class JeekimSwaggerConfig {
                             .description("Hospital Key Authentication")
                     )
             )
+            .servers(listOf(io.swagger.v3.oas.models.servers.Server().url("https://dev-jph.server-jeekim.com")))
     }
 
     private fun apiInfo(): Info = Info()

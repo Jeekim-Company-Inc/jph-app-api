@@ -32,8 +32,8 @@ class AuthorizationFilter(
         try {
             val hospitalKey = request.getHeader("hospital-key")
             val path = request.servletPath
-            logger().info("path: $path")
             if (path.startsWith("/drug") || path.startsWith("/prescription")) {
+                logger().info("path: $path")
                 if(hospitalKey == null) throw AuthException(ErrorCode.HEADER_NOT_FOUND)
                 checkHospitalKey(request, hospitalKey)
             }
