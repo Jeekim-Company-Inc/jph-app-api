@@ -28,7 +28,10 @@ class JeekimSwaggerConfig {
                             .description("Hospital Key Authentication")
                     )
             )
-            .servers(listOf(io.swagger.v3.oas.models.servers.Server().url("https://dev-jph.jeekim-server.com")))
+            .servers(listOf(
+                io.swagger.v3.oas.models.servers.Server().url("https://dev-jph.jeekim-server.com"),
+                io.swagger.v3.oas.models.servers.Server().url("https://jph.jeekim-server.com"),
+            ))
     }
 
     private fun apiInfo(): Info = Info()
