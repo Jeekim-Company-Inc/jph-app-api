@@ -1,10 +1,8 @@
 package com.jeekim.server.jphappapi.client.lomin
 
-import com.jeekim.server.jphappapi.client.lomin.data.LominAuthRequest
 import com.jeekim.server.jphappapi.client.lomin.data.LominAuthResponse
 import com.jeekim.server.jphappapi.client.lomin.data.LominOcrRequest
 import com.jeekim.server.jphappapi.client.lomin.data.LominOcrResponse
-import feign.Headers
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.util.MultiValueMap
 import org.springframework.web.bind.annotation.PostMapping

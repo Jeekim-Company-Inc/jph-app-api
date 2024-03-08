@@ -6,6 +6,7 @@ import com.jeekim.server.jphappapi.data.ImageUrl
 import com.jeekim.server.jphappapi.exception.ErrorCode
 import com.jeekim.server.jphappapi.exception.JphBizException
 import com.jeekim.server.jphappapi.utils.logger
+import org.springframework.web.multipart.MultipartFile
 
 class BucketAdapter(
     private val amazonS3Client: AmazonS3Client,
@@ -37,6 +38,15 @@ class BucketAdapter(
     }
     private fun getResourceUrl(fileKey: String): String {
         return amazonS3Client.getUrl(bucketName, fileKey).toString()
+    }
+
+    fun upload(multipartFile: MultipartFile, fileName: String): String {
+        val metadata = ObjectMetadata()
+        metadata.contentType = "image/jpeg"
+        val inputStream = multipartFile.inputStream
+        val request = PutObjectRequest(bucketName, fileName, inputStream, metadata)
+        amazonS3Client.putObject(request)
+        return getResourceUrl(fileName)
     }
 
 }

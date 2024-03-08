@@ -2,20 +2,22 @@ package com.jeekim.server.jphappapi.data
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.jeekim.server.jphappapi.client.kims.data.KimsDrugHistorySendRequest
+import com.jeekim.server.jphappapi.client.lomin.model.DiseaseCodes
+import com.jeekim.server.jphappapi.client.lomin.model.DoctorName
+import com.jeekim.server.jphappapi.client.lomin.model.IssuanceDate
+import com.jeekim.server.jphappapi.client.lomin.model.IssuanceNumber
+import com.jeekim.server.jphappapi.client.lomin.model.LicenseNumber
+import com.jeekim.server.jphappapi.client.lomin.model.MedicalInstName
+import com.jeekim.server.jphappapi.client.lomin.model.NursingInstNumber
+import com.jeekim.server.jphappapi.client.lomin.model.PatientCategory
+import com.jeekim.server.jphappapi.client.lomin.model.PatientName
+import com.jeekim.server.jphappapi.client.lomin.model.PatientRrn
+import com.jeekim.server.jphappapi.client.lomin.model.PrescriptionRef
+import com.jeekim.server.jphappapi.client.lomin.model.SelfPayCode
 import com.jeekim.server.jphappapi.exception.ErrorCode
 import com.jeekim.server.jphappapi.exception.JphBizException
 import com.jeekim.server.jphappapi.model.KimsInputType
-import com.jeekim.server.jphappapi.model.prescription.Bbox
-import com.jeekim.server.jphappapi.model.prescription.CompositeItem
-import com.jeekim.server.jphappapi.model.prescription.IssuanceDate
-import com.jeekim.server.jphappapi.model.prescription.PatientCategory
-import com.jeekim.server.jphappapi.model.prescription.PatientName
 import com.jeekim.server.jphappapi.model.prescription.PrescriptionContent
-import com.jeekim.server.jphappapi.model.prescription.PrescriptionRef
-import com.jeekim.server.jphappapi.model.prescription.SingleBboxItem
-import com.jeekim.server.jphappapi.model.prescription.SingleItem
-import com.jeekim.server.jphappapi.utils.hashSHA512
-import java.util.UUID
 
 data class OcrCheckedRequest (
     @JsonProperty("patientCategory")
@@ -25,29 +27,27 @@ data class OcrCheckedRequest (
     @JsonProperty("issuanceDate")
     val issuanceDate: IssuanceDate = IssuanceDate(),
     @JsonProperty("issuanceNumber")
-    val issuanceNumber: SingleItem = SingleItem(),
+    val issuanceNumber: IssuanceNumber = IssuanceNumber(),
     @JsonProperty("patientRrn")
-    val patientRrn: SingleBboxItem = SingleBboxItem(),
+    val patientRrn: PatientRrn = PatientRrn(),
     @JsonProperty("selfPayCode")
-    val selfPayCode: SingleItem = SingleItem(),
+    val selfPayCode: SelfPayCode = SelfPayCode(),
     @JsonProperty("doctorName")
-    val doctorName: SingleBboxItem = SingleBboxItem(),
+    val doctorName: DoctorName = DoctorName(),
     @JsonProperty("medicalInstName")
-    val medicalInstName: SingleItem = SingleItem(),
+    val medicalInstName: MedicalInstName = MedicalInstName(),
     @JsonProperty("nursingInstNumber")
-    val nursingInstNumber: SingleItem = SingleItem(),
+    val nursingInstNumber: NursingInstNumber = NursingInstNumber(),
     @JsonProperty("licenseNumber")
-    val licenseNumber: SingleBboxItem = SingleBboxItem(),
+    val licenseNumber: LicenseNumber = LicenseNumber(),
     @JsonProperty("diseaseCodes")
-    val diseaseCodes: CompositeItem = CompositeItem(),
+    val diseaseCodes: DiseaseCodes = DiseaseCodes(),
     @JsonProperty("prescriptionRef")
     val prescriptionRef: PrescriptionRef = PrescriptionRef(),
     @JsonProperty("internalPrescriptionContents")
     var internalPrescriptionContents: List<PrescriptionContent> = emptyList(),
     @JsonProperty("injectionPrescriptionContents")
     var injectionPrescriptionContents: List<PrescriptionContent> = emptyList(),
-    @JsonProperty("extraPersonalInfoBboxList")
-    val extraPersonalInfoBboxList: MutableList<Bbox> = mutableListOf(),
     @JsonProperty("fileKey")
     val fileKey: String? = null,
 ){

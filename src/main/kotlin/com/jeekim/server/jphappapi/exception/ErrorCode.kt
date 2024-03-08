@@ -19,6 +19,7 @@ enum class ErrorCode(
     TERMS_NAME_IS_NOT_MATCH("100001", HttpStatus.BAD_REQUEST, "약관 이름이 일치하지 않음", null),
     TERMS_IMAGES_NOT_EXISTS("100002", HttpStatus.BAD_REQUEST, "약관 이미지가 존재하지 않음", null),
     KIMS_API_INPUT_NOT_VALID("100003", HttpStatus.BAD_REQUEST, "KIMS API 입력값이 유효하지 않음", null),
+    ENCODE_FILE_ERROR("100004", HttpStatus.BAD_REQUEST, "파일 인코딩 에러", null),
 
     // 외부 호출 에러
     INFOTECH_API_ERROR("200001", HttpStatus.INTERNAL_SERVER_ERROR, "인포텍 API 호출 에러", null),

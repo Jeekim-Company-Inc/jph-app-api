@@ -1,10 +1,11 @@
-package com.jeekim.server.jphappapi.model.prescription
+package com.jeekim.server.jphappapi.client.lomin.model
 
+import java.util.*
 
 enum class PrescriptionCode(
     val code: String,
     val keyString: String,
-    val abbr: String?,
+    val abbreviation: String?,
     val needCheckNotEssential: Boolean
 ) {
     PRESCRIPTION_ID("JK-PID", "prescriptionId", "pid", false),
@@ -53,16 +54,15 @@ enum class PrescriptionCode(
     INJECTION_DOSING_PER_DAY("MD-PRS-IPPD", "(주사) 1일 투여횟수", null, false),
     INJECTION_TOTAL_DOSING_DAYS("MD-PRS-IPTD", "(주사) 총 투약일수", null, false),
     INJECTION_SELF_PAY_RATE_CODE("MD-PRS-IPRC", "(주사) 본인부담률구분코드", null, false),
+
     NULL("null", "null", "null", false);
 
     companion object {
-        fun getKeyStringFromCode(code: String): String? {
-            return entries.firstOrNull { it.code == code }?.keyString
-        }
-
         fun of(code: String): PrescriptionCode {
-            return entries.firstOrNull { it.code == code } ?: NULL
+            return Arrays.stream(entries.toTypedArray())
+                .filter { c: PrescriptionCode -> c.code == code }
+                .findFirst()
+                .orElse(NULL)
         }
     }
 }
-

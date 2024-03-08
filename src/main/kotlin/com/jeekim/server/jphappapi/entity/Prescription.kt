@@ -22,6 +22,7 @@ data class Prescription(
     @Column(name = "status")
     var status: ShootStatus = ShootStatus.WAITING,
     var message: String = "",
+//    var filePath : String
 ): BaseTimeEntity(){
     fun success() {
         status = ShootStatus.SUCCESS

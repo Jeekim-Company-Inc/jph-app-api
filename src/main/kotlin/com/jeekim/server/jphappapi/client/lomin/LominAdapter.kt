@@ -3,8 +3,6 @@ package com.jeekim.server.jphappapi.client.lomin
 import com.jeekim.server.jphappapi.client.lomin.data.LominAuthRequest
 import com.jeekim.server.jphappapi.client.lomin.data.LominOcrRequest
 import com.jeekim.server.jphappapi.client.lomin.data.LominOcrResponse
-import com.jeekim.server.jphappapi.exception.ErrorCode
-import com.jeekim.server.jphappapi.exception.JphBizException
 import com.jeekim.server.jphappapi.utils.HttpUtils
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
