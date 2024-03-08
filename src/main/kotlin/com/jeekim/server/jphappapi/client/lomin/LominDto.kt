@@ -1,8 +1,8 @@
-package com.jeekim.server.jmpappapi.client.lomin
+package com.jeekim.server.jphappapi.client.lomin
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.jeekim.server.jphappapi.client.lomin.model.PrescriptionCode
-
+import com.jeekim.server.jphappapi.model.prescription.Bbox
 
 
 data class Prediction(

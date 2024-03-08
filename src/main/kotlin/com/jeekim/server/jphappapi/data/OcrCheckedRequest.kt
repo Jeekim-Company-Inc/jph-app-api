@@ -17,6 +17,7 @@ import com.jeekim.server.jphappapi.client.lomin.model.SelfPayCode
 import com.jeekim.server.jphappapi.exception.ErrorCode
 import com.jeekim.server.jphappapi.exception.JphBizException
 import com.jeekim.server.jphappapi.model.KimsInputType
+import com.jeekim.server.jphappapi.model.prescription.Bbox
 import com.jeekim.server.jphappapi.model.prescription.PrescriptionContent
 
 data class OcrCheckedRequest (
@@ -48,6 +49,8 @@ data class OcrCheckedRequest (
     var internalPrescriptionContents: List<PrescriptionContent> = emptyList(),
     @JsonProperty("injectionPrescriptionContents")
     var injectionPrescriptionContents: List<PrescriptionContent> = emptyList(),
+    @JsonProperty("extraPersonalInfoBboxList")
+    val extraPersonalInfoBboxList: MutableList<Bbox> = mutableListOf(),
     @JsonProperty("fileKey")
     val fileKey: String? = null,
 ){

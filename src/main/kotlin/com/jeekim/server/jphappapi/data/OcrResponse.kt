@@ -13,6 +13,7 @@ import com.jeekim.server.jphappapi.client.lomin.model.PatientName
 import com.jeekim.server.jphappapi.client.lomin.model.PatientRrn
 import com.jeekim.server.jphappapi.client.lomin.model.PrescriptionRef
 import com.jeekim.server.jphappapi.client.lomin.model.SelfPayCode
+import com.jeekim.server.jphappapi.model.prescription.Bbox
 import com.jeekim.server.jphappapi.model.prescription.PrescriptionContent
 data class OcrResponse (
     val patientCategory: PatientCategory = PatientCategory(),
@@ -29,5 +30,6 @@ data class OcrResponse (
     val prescriptionRef: PrescriptionRef = PrescriptionRef(),
     var internalPrescriptionContents: List<PrescriptionContent> = emptyList(),
     var injectionPrescriptionContents: List<PrescriptionContent> = emptyList(),
-    var fileKey: String? = null
+    val extraPersonalInfoBboxList: MutableList<Bbox> = mutableListOf(),
+    var fileKey: String? = "empty"
 )

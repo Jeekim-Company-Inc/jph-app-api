@@ -1,19 +1,22 @@
 package com.jeekim.server.jphappapi.utils
 
-import com.jeekim.server.jmpappapi.client.lomin.KeyValue
-import com.jeekim.server.jmpappapi.client.lomin.Table
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.jeekim.server.jphappapi.client.lomin.KeyValue
+import com.jeekim.server.jphappapi.client.lomin.Table
+import com.jeekim.server.jphappapi.client.lomin.data.LominOcrResponse
 import com.jeekim.server.jphappapi.client.lomin.model.DrugCode
 import com.jeekim.server.jphappapi.client.lomin.model.DrugName
-import com.jeekim.server.jphappapi.client.lomin.model.SelfPayRateCode
-import com.jeekim.server.jphappapi.client.lomin.data.LominOcrResponse
 import com.jeekim.server.jphappapi.client.lomin.model.PrescriptionCode
+import com.jeekim.server.jphappapi.client.lomin.model.SelfPayRateCode
 import com.jeekim.server.jphappapi.data.OcrResponse
+import com.jeekim.server.jphappapi.model.prescription.Bbox
 import com.jeekim.server.jphappapi.model.prescription.PrescriptionContent
 import com.jeekim.server.jphappapi.model.prescription.SelfPayRateCodeEnum
 import java.util.regex.Pattern
 
 class PrescriptionParser(
     private val postInferenceResponse: LominOcrResponse,
+    private val objectMapper: ObjectMapper = ObjectMapper()
 ) {
     fun parsePostInferenceResponse(): OcrResponse {
         var ocrResponse = OcrResponse()
@@ -23,7 +26,6 @@ class PrescriptionParser(
 
         postInferenceResponse.prediction.tables
             .forEach { table -> insertPrescriptionContents(ocrResponse, table) }
-
 
         return ocrResponse
     }
