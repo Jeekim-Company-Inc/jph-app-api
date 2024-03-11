@@ -73,7 +73,7 @@ data class OcrCheckedRequest (
             rxData = KimsDrugHistorySendRequest.RxData(
                 patientNo = rrn,
                 patientName = name,
-                prescription = listOf(
+                prescriptions = listOf(
                     KimsDrugHistorySendRequest.RxPrescription(
                         hospNum = nursingInstNumber,
                         hospName = medicalInstName,

@@ -13,7 +13,7 @@ data class KimsDrugHistorySendRequest (
     data class RxData(
         val patientNo: String,
         val patientName: String,
-        val prescription: List<RxPrescription>
+        val prescriptions: List<RxPrescription>
     )
     data class RxPrescription(
         val hospNum: String,
@@ -72,7 +72,7 @@ data class KimsDrugHistorySendRequest (
                 rxData = RxData(
                     patientNo = userInfo.createRrn(),
                     patientName = userInfo.name,
-                    prescription = drugHistory.map {
+                    prescriptions = drugHistory.map {
                         RxPrescription(
                             hospNum = "",
                             hospName = it.hospital,
