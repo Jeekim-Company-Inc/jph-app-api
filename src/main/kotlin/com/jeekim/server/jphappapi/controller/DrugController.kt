@@ -7,7 +7,6 @@ import com.jeekim.server.jphappapi.data.GetMyDrugHistoriesResponse
 import com.jeekim.server.jphappapi.data.KimsSendCheckRequeset
 import com.jeekim.server.jphappapi.data.OcrCheckedRequest
 import com.jeekim.server.jphappapi.data.SendMyDrugHistoriesRequest
-import com.jeekim.server.jphappapi.data.SmsRefreshRequest
 import com.jeekim.server.jphappapi.data.SmsSendRequest
 import com.jeekim.server.jphappapi.data.SmsSendResponse
 import com.jeekim.server.jphappapi.data.SmsVerifyRequest
@@ -60,13 +59,6 @@ class DrugController(
     fun smsSend(@Valid @RequestBody(required = true) request: SmsSendRequest): SmsSendResponse {
         return drugService.sendSms(request)
     }
-
-    @PostMapping("/sms/refresh")
-    @Operation(summary = "SMS 보안코드 재전송")
-    fun smsRefresh(@Valid @RequestBody(required = true) request: SmsRefreshRequest): SmsSendResponse {
-        return drugService.refreshSms(request)
-    }
-
     @PostMapping("/sms/verify")
     @Operation(summary = "SMS 보안코드 검증 및 문자 전송")
     @ApiResponses(

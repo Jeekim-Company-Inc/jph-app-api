@@ -2,7 +2,6 @@ package com.jeekim.server.jphappapi.client.infotech.data
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.jeekim.server.jphappapi.data.GetMyDrugHistoriesBySmsRequest
-import com.jeekim.server.jphappapi.data.SmsRefreshRequest
 import com.jeekim.server.jphappapi.data.SmsSendRequest
 import com.jeekim.server.jphappapi.data.SmsVerifyRequest
 import com.jeekim.server.jphappapi.model.SmsType
@@ -52,23 +51,6 @@ data class InfotechSmsRequest (
             return InfotechSmsRequest(
                 affix = request.phoneNumber,
                 step = SmsType.SEND.step,
-                name = request.name,
-                mobileNo = request.phoneNumber,
-                ssn1 = request.rrnFirst,
-                ssn2 = request.rrnSecond,
-                sdate = now.minusYears(1).format(DateTimeFormatter.ofPattern("yyyyMMdd")),
-                edate = now.format(DateTimeFormatter.ofPattern("yyyyMMdd")),
-                step_input = request.stepInput,
-                mobileCo = request.mobileCo.name,
-                userData = request.userData
-            )
-        }
-
-        fun of(request: SmsRefreshRequest): InfotechSmsRequest{
-            val now = LocalDate.now()
-            return InfotechSmsRequest(
-                affix = request.phoneNumber,
-                step = SmsType.REFRESH.step,
                 name = request.name,
                 mobileNo = request.phoneNumber,
                 ssn1 = request.rrnFirst,

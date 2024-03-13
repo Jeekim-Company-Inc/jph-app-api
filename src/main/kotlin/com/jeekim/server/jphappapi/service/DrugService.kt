@@ -10,7 +10,6 @@ import com.jeekim.server.jphappapi.data.GetMyDrugHistoriesByKakaoRequest
 import com.jeekim.server.jphappapi.data.GetMyDrugHistoriesBySmsRequest
 import com.jeekim.server.jphappapi.data.OcrCheckedRequest
 import com.jeekim.server.jphappapi.data.SendMyDrugHistoriesRequest
-import com.jeekim.server.jphappapi.data.SmsRefreshRequest
 import com.jeekim.server.jphappapi.data.SmsSendRequest
 import com.jeekim.server.jphappapi.data.SmsSendResponse
 import com.jeekim.server.jphappapi.data.SmsVerifyRequest
@@ -57,10 +56,6 @@ class DrugService(
             throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
         }
         return result
-    }
-    fun refreshSms(request: SmsRefreshRequest): SmsSendResponse {
-        val smsRefreshRequest = InfotechSmsRequest.of(request)
-        return infotechAdapter.refreshSms(smsRefreshRequest)
     }
     fun getMyDrugHistoriesBySmsLogin(request: GetMyDrugHistoriesBySmsRequest): InfotechMyDrugHistoriesResponse {
         val smsLoginRequest = InfotechSmsRequest.of(request)

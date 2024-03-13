@@ -29,8 +29,4 @@ class InfotechAdapter(
         return infotechClient.verifySms(request)
     }
 
-    fun refreshSms(request: InfotechSmsRequest): SmsSendResponse {
-        return infotechClient.refreshSms(request)
-    }
-
 }

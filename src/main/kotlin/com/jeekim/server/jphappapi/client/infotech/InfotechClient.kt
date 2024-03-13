@@ -32,11 +32,6 @@ interface InfotechClient {
     ): SmsSendResponse
 
     @PostMapping
-    fun refreshSms(
-        @RequestBody request: InfotechSmsRequest
-    ): SmsSendResponse
-
-    @PostMapping
     fun verifySms(
         @RequestBody request: InfotechSmsRequest
     ): SmsVerifyResponse
