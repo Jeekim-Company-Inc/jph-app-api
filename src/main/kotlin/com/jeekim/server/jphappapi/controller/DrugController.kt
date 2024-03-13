@@ -49,6 +49,11 @@ class DrugController(
     }
     @PostMapping("/sms/send")
     @Operation(summary = "SMS 보안코드 전송")
+    @ApiResponses(
+        ApiResponse(responseCode = "200", description = "OK"),
+        ApiResponse(responseCode = "400", description = "[300001] 입력값이 올바르지 않습니다."),
+        ApiResponse(responseCode = "500", description = "[200001] 인포텍 API 호출 에러")
+    )
     fun smsSend(@Valid @RequestBody(required = true) request: SmsSendRequest): SmsSendResponse {
         return drugService.sendSms(request)
     }
@@ -61,6 +66,11 @@ class DrugController(
 
     @PostMapping("/sms/verify")
     @Operation(summary = "SMS 보안코드 검증 및 문자 전송")
+    @ApiResponses(
+        ApiResponse(responseCode = "200", description = "OK"),
+        ApiResponse(responseCode = "400", description = "[200004] 보안 코드 불일치, [300001] 입력값이 올바르지 않습니다."),
+        ApiResponse(responseCode = "500", description = "[200001] 인포텍 API 호출 에러")
+    )
     fun smsVerify(@Valid @RequestBody(required = true) request: SmsVerifyRequest): SmsVerifyResponse {
         return drugService.verifySms(request)
     }
@@ -69,7 +79,7 @@ class DrugController(
     @Operation(summary = "내가 먹은 약 조회(SMS)")
     @ApiResponses(
         ApiResponse(responseCode = "200", description = "OK"),
-        ApiResponse(responseCode = "400", description = "[300001] 입력값이 올바르지 않습니다."),
+        ApiResponse(responseCode = "400", description = "[200005] SMS 인증 코드 불일치, [300001] 입력값이 올바르지 않습니다."),
         ApiResponse(responseCode = "500", description = "[200001] 인포텍 API 호출 에러")
     )
     fun getMyDrugHistoriesSms(

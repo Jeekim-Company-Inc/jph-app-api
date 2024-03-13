@@ -25,6 +25,8 @@ enum class ErrorCode(
     INFOTECH_API_ERROR("200001", HttpStatus.INTERNAL_SERVER_ERROR, "인포텍 API 호출 에러", null),
     LOMIN_API_ERROR("200002", HttpStatus.INTERNAL_SERVER_ERROR, "로민 API 호출 에러", null),
     KIMS_API_ERROR("200003", HttpStatus.INTERNAL_SERVER_ERROR, "KIMS API 호출 에러", null),
+    SECURITY_CODE_NOT_MATCH("200004", HttpStatus.BAD_REQUEST, "보안코드가 일치하지 않음", null),
+    SMS_CODE_NOT_MATCH("200005", HttpStatus.BAD_REQUEST, "SMS 인증번호가 일치하지 않음", null),
 
     // 공통 에러
     INPUT_NOT_VALID("300001", HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음", null),

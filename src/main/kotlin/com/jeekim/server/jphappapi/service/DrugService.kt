@@ -15,6 +15,8 @@ import com.jeekim.server.jphappapi.data.SmsSendRequest
 import com.jeekim.server.jphappapi.data.SmsSendResponse
 import com.jeekim.server.jphappapi.data.SmsVerifyRequest
 import com.jeekim.server.jphappapi.data.SmsVerifyResponse
+import com.jeekim.server.jphappapi.exception.ErrorCode
+import com.jeekim.server.jphappapi.exception.JphBizException
 import com.jeekim.server.jphappapi.utils.logger
 import org.springframework.stereotype.Service
 
@@ -31,12 +33,28 @@ class DrugService(
 
     fun sendSms(request: SmsSendRequest): SmsSendResponse {
         val smsSendRequest = InfotechSmsRequest.of(request)
-        return infotechAdapter.sendSms(smsSendRequest)
+        val result = runCatching { infotechAdapter.sendSms(smsSendRequest) }.getOrNull()
+            ?: throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
+        val errYn = result.out.errYn
+        if(errYn == "Y"){
+            throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
+        }
+        return result
     }
 
     fun verifySms(request: SmsVerifyRequest): SmsVerifyResponse {
         val smsSendRequest = InfotechSmsRequest.of(request)
-        return infotechAdapter.verifySms(smsSendRequest)
+        val result = runCatching { infotechAdapter.verifySms(smsSendRequest) }.getOrNull()
+            ?: throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
+        val errYn = result.out.errYn
+        val errMsg = result.out.errMsg
+        if(errYn == "Y"){
+            if(errMsg.contains("I0001-004")){
+                throw JphBizException(ErrorCode.SECURITY_CODE_NOT_MATCH)
+            }
+            throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
+        }
+        return result
     }
     fun refreshSms(request: SmsRefreshRequest): SmsSendResponse {
         val smsRefreshRequest = InfotechSmsRequest.of(request)
@@ -44,7 +62,18 @@ class DrugService(
     }
     fun getMyDrugHistoriesBySmsLogin(request: GetMyDrugHistoriesBySmsRequest): InfotechMyDrugHistoriesResponse {
         val smsLoginRequest = InfotechSmsRequest.of(request)
-        return infotechAdapter.getMyDrugHistoriesBySmsLogin(smsLoginRequest)
+        val result = runCatching { infotechAdapter.getMyDrugHistoriesBySmsLogin(smsLoginRequest) }.getOrNull()
+            ?: throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
+        val errYn = result.out.errYn
+        val errMsg = result.out.errMsg
+        if(errYn == "Y"){
+            if(errMsg.contains("I0001-004")){
+                throw JphBizException(ErrorCode.SMS_CODE_NOT_MATCH)
+            }
+            throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
+        }
+        return result
+
     }
 
     fun sendMyDrugHistoriesByApi(request: SendMyDrugHistoriesRequest){
