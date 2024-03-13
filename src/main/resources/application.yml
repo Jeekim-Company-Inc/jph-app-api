@@ -32,7 +32,7 @@ feign:
   client:
     config:
       default:
-        loggerLevel: BASIC
+        loggerLevel: FULL
         connect-timeout: 2000
         read-timeout: 180000
 

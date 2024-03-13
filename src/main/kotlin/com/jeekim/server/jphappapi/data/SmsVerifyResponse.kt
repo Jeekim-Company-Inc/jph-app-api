@@ -12,7 +12,7 @@ data class SmsVerifyResponse (
     val out: Out
 ){
     data class Out(
-        val userData: String,
+        val userData: String? = null,
         val errYn: String,
         val errMsg: String
     )

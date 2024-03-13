@@ -25,11 +25,8 @@ class PrescriptionService(
 ) {
     @Transactional
     fun postOcr(prescription: MultipartFile, hospitalId: String): OcrResponse? {
-        val today = LocalDate.now()
         val uuid = UUID.randomUUID().toString()
         val fileName = "${uuid}.jpg"
-//        val filePath = "/prescriptions/${hospitalId}/${today.year}/${today.monthValue}/${today.dayOfMonth}/${fileName}"
-//        val fileUrl = bucketAdapter.upload(prescription, filePath)
         val saved = prescriptionRepository.save(Prescription(hospitalId = hospitalId))
         val result = runCatching {
             val request = LominOcrRequest.of(encodeFile(prescription), fileName)

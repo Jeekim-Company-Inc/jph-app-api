@@ -14,7 +14,6 @@ import com.jeekim.server.jphappapi.data.SmsVerifyRequest
 import com.jeekim.server.jphappapi.data.SmsVerifyResponse
 import com.jeekim.server.jphappapi.exception.ErrorResponse
 import com.jeekim.server.jphappapi.service.DrugService
-import com.jeekim.server.jphappapi.utils.logger
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -37,9 +36,11 @@ class DrugController(
     @PostMapping("/easy")
     @Operation(summary = "내가 먹은 약 조회(간편 인증)")
     @ApiResponses(
-        ApiResponse(responseCode = "200", description = "OK"),
-        ApiResponse(responseCode = "400", description = "[300001] 입력값이 올바르지 않습니다."),
-        ApiResponse(responseCode = "500", description = "[200001] 인포텍 API 호출 에러")
+       value = [
+           ApiResponse(responseCode = "200", description = "OK"),
+           ApiResponse(responseCode = "400", description = "[300001] 입력값이 올바르지 않습니다.", content = [Content(schema = Schema(implementation = ErrorResponse::class))]),
+           ApiResponse(responseCode = "500", description = "[200001] 인포텍 API 호출 에러", content = [Content(schema = Schema(implementation = ErrorResponse::class))])
+       ]
     )
     fun getMyDrugHistoriesEasy(
         @Valid @RequestBody(required = true) request: GetMyDrugHistoriesByKakaoRequest
@@ -50,9 +51,11 @@ class DrugController(
     @PostMapping("/sms/send")
     @Operation(summary = "SMS 보안코드 전송")
     @ApiResponses(
-        ApiResponse(responseCode = "200", description = "OK"),
-        ApiResponse(responseCode = "400", description = "[300001] 입력값이 올바르지 않습니다."),
-        ApiResponse(responseCode = "500", description = "[200001] 인포텍 API 호출 에러")
+        value = [
+            ApiResponse(responseCode = "200", description = "OK"),
+            ApiResponse(responseCode = "400", description = "[300001] 입력값이 올바르지 않습니다.", content = [Content(schema = Schema(implementation = ErrorResponse::class))]),
+            ApiResponse(responseCode = "500", description = "[200001] 인포텍 API 호출 에러", content = [Content(schema = Schema(implementation = ErrorResponse::class))])
+        ]
     )
     fun smsSend(@Valid @RequestBody(required = true) request: SmsSendRequest): SmsSendResponse {
         return drugService.sendSms(request)
@@ -67,9 +70,11 @@ class DrugController(
     @PostMapping("/sms/verify")
     @Operation(summary = "SMS 보안코드 검증 및 문자 전송")
     @ApiResponses(
-        ApiResponse(responseCode = "200", description = "OK"),
-        ApiResponse(responseCode = "400", description = "[200004] 보안 코드 불일치, [300001] 입력값이 올바르지 않습니다."),
-        ApiResponse(responseCode = "500", description = "[200001] 인포텍 API 호출 에러")
+        value = [
+            ApiResponse(responseCode = "200", description = "OK", content = [Content(schema = Schema(implementation = SmsVerifyResponse::class))]),
+            ApiResponse(responseCode = "400", description = "[200004] 보안 코드 불일치 \n\n [300001] 입력값이 올바르지 않습니다.", content = [Content(schema = Schema(implementation = ErrorResponse::class))]),
+            ApiResponse(responseCode = "500", description = "[200001] 인포텍 API 호출 에러", content = [Content(schema = Schema(implementation = ErrorResponse::class))])
+        ]
     )
     fun smsVerify(@Valid @RequestBody(required = true) request: SmsVerifyRequest): SmsVerifyResponse {
         return drugService.verifySms(request)
@@ -78,9 +83,11 @@ class DrugController(
     @PostMapping("/sms")
     @Operation(summary = "내가 먹은 약 조회(SMS)")
     @ApiResponses(
-        ApiResponse(responseCode = "200", description = "OK"),
-        ApiResponse(responseCode = "400", description = "[200005] SMS 인증 코드 불일치, [300001] 입력값이 올바르지 않습니다."),
-        ApiResponse(responseCode = "500", description = "[200001] 인포텍 API 호출 에러")
+        value = [
+            ApiResponse(responseCode = "200", description = "OK", content = [Content(schema = Schema(implementation = GetMyDrugHistoriesResponse::class))]),
+            ApiResponse(responseCode = "400", description = "[200005] SMS 인증 코드 불일치 \n\n [300001] 입력값이 올바르지 않습니다.", content = [Content(schema = Schema(implementation = ErrorResponse::class))]),
+            ApiResponse(responseCode = "500", description = "[200001] 인포텍 API 호출 에러", content = [Content(schema = Schema(implementation = ErrorResponse::class))])
+        ]
     )
     fun getMyDrugHistoriesSms(
         @Valid @RequestBody(required = true) request: GetMyDrugHistoriesBySmsRequest
@@ -91,9 +98,11 @@ class DrugController(
 
     @Operation(summary = "내가 먹은 약 KIMS 전송 - API")
     @ApiResponses(
-        ApiResponse(responseCode = "200", description = "OK"),
-        ApiResponse(responseCode = "400", description = "[300001] 입력값이 올바르지 않습니다."),
-        ApiResponse(responseCode = "500", description = "[200003] 킴스 API 호출 에러")
+        value = [
+            ApiResponse(responseCode = "200", description = "OK"),
+            ApiResponse(responseCode = "400", description = "[300001] 입력값이 올바르지 않습니다.", content = [Content(schema = Schema(implementation = ErrorResponse::class))]),
+            ApiResponse(responseCode = "500", description = "[200003] 킴스 API 호출 에러", content = [Content(schema = Schema(implementation = ErrorResponse::class))])
+        ]
     )
     @PostMapping("/api/send")
     fun sendMyDrugHistoriesByApi(@RequestBody request: SendMyDrugHistoriesRequest) {
@@ -101,9 +110,11 @@ class DrugController(
     }
     @Operation(summary = "내가 먹은 약 KIMS 전송 - OCR")
     @ApiResponses(
-        ApiResponse(responseCode = "200", description = "OK"),
-        ApiResponse(responseCode = "400", description = "[300001] 입력값이 올바르지 않습니다."),
-        ApiResponse(responseCode = "500", description = "[200003] 킴스 API 호출 에러")
+        value = [
+            ApiResponse(responseCode = "200", description = "OK"),
+            ApiResponse(responseCode = "400", description = "[300001] 입력값이 올바르지 않습니다.", content = [Content(schema = Schema(implementation = ErrorResponse::class))]),
+            ApiResponse(responseCode = "500", description = "[200003] 킴스 API 호출 에러", content = [Content(schema = Schema(implementation = ErrorResponse::class))])
+        ]
     )
     @PostMapping("/ocr/send")
     fun sendMyDrugHistoriesByOCR(@RequestBody request: OcrCheckedRequest){
@@ -112,9 +123,11 @@ class DrugController(
 
     @Operation(summary = "내가 먹은 약 전송 확인 - 개발용으로만, deprecate 예정")
     @ApiResponses(
-        ApiResponse(responseCode = "200", description = "OK"),
-        ApiResponse(responseCode = "400", description = "[300001] 입력값이 올바르지 않습니다."),
-        ApiResponse(responseCode = "500", description = "[200003] 킴스 API 호출 에러")
+        value = [
+            ApiResponse(responseCode = "200", description = "OK"),
+            ApiResponse(responseCode = "400", description = "[300001] 입력값이 올바르지 않습니다.", content = [Content(schema = Schema(implementation = ErrorResponse::class))]),
+            ApiResponse(responseCode = "500", description = "[200003] 킴스 API 호출 에러", content = [Content(schema = Schema(implementation = ErrorResponse::class))])
+        ]
     )
     @PostMapping("/check")
     fun checkMySend(
