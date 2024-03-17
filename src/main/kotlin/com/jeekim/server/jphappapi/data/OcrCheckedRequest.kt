@@ -2,83 +2,81 @@ package com.jeekim.server.jphappapi.data
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.jeekim.server.jphappapi.client.kims.data.KimsDrugHistorySendRequest
-import com.jeekim.server.jphappapi.client.lomin.model.DiseaseCodes
-import com.jeekim.server.jphappapi.client.lomin.model.DoctorName
-import com.jeekim.server.jphappapi.client.lomin.model.IssuanceDate
-import com.jeekim.server.jphappapi.client.lomin.model.IssuanceNumber
-import com.jeekim.server.jphappapi.client.lomin.model.LicenseNumber
-import com.jeekim.server.jphappapi.client.lomin.model.MedicalInstName
-import com.jeekim.server.jphappapi.client.lomin.model.NursingInstNumber
-import com.jeekim.server.jphappapi.client.lomin.model.PatientCategory
-import com.jeekim.server.jphappapi.client.lomin.model.PatientName
-import com.jeekim.server.jphappapi.client.lomin.model.PatientRrn
-import com.jeekim.server.jphappapi.client.lomin.model.PrescriptionRef
-import com.jeekim.server.jphappapi.client.lomin.model.SelfPayCode
 import com.jeekim.server.jphappapi.exception.ErrorCode
 import com.jeekim.server.jphappapi.exception.JphBizException
 import com.jeekim.server.jphappapi.model.KimsInputType
 import com.jeekim.server.jphappapi.model.prescription.Bbox
-import com.jeekim.server.jphappapi.model.prescription.PrescriptionContent
+import java.time.LocalDate
 
 data class OcrCheckedRequest (
     @JsonProperty("patientCategory")
-    val patientCategory: PatientCategory = PatientCategory(),
+    val patientCategory: String?,
     @JsonProperty("patientName")
-    val patientName: PatientName = PatientName(),
+    val patientName: String?,
     @JsonProperty("issuanceDate")
-    val issuanceDate: IssuanceDate = IssuanceDate(),
+    val issuanceDate: LocalDate,
     @JsonProperty("issuanceNumber")
-    val issuanceNumber: IssuanceNumber = IssuanceNumber(),
+    val issuanceNumber: String?,
     @JsonProperty("patientRrn")
-    val patientRrn: PatientRrn = PatientRrn(),
+    val patientRrn: String?,
     @JsonProperty("selfPayCode")
-    val selfPayCode: SelfPayCode = SelfPayCode(),
+    val selfPayCode: String?,
     @JsonProperty("doctorName")
-    val doctorName: DoctorName = DoctorName(),
+    val doctorName: String?,
     @JsonProperty("medicalInstName")
-    val medicalInstName: MedicalInstName = MedicalInstName(),
+    val medicalInstName: String?,
     @JsonProperty("nursingInstNumber")
-    val nursingInstNumber: NursingInstNumber = NursingInstNumber(),
+    val nursingInstNumber: String?,
     @JsonProperty("licenseNumber")
-    val licenseNumber: LicenseNumber = LicenseNumber(),
+    val licenseNumber: String?,
     @JsonProperty("diseaseCodes")
-    val diseaseCodes: DiseaseCodes = DiseaseCodes(),
+    val diseaseCodes: List<String>,
     @JsonProperty("prescriptionRef")
-    val prescriptionRef: PrescriptionRef = PrescriptionRef(),
+    val prescriptionRef: String?,
     @JsonProperty("internalPrescriptionContents")
-    var internalPrescriptionContents: List<PrescriptionContent> = emptyList(),
+    var internalPrescriptionContents: List<PrescriptionContentRequest> = emptyList(),
     @JsonProperty("injectionPrescriptionContents")
-    var injectionPrescriptionContents: List<PrescriptionContent> = emptyList(),
-    @JsonProperty("extraPersonalInfoBboxList")
-    val extraPersonalInfoBboxList: MutableList<Bbox> = mutableListOf(),
+    var injectionPrescriptionContents: List<PrescriptionContentRequest> = emptyList(),
     @JsonProperty("fileKey")
     val fileKey: String? = null,
 ){
+    data class PrescriptionContentRequest(
+        val selfPayRateCode: String,
+        val drugCode: String?,
+        val drugName: String?,
+        val oneDose: String,
+        val dosingPerDay: String,
+        val totalDosingDays: String
+    ){
+        fun validate(){
+            if(drugCode.isNullOrBlank() || drugName.isNullOrBlank()){
+                throw JphBizException(ErrorCode.INPUT_NOT_VALID, "약 코드 또는 약 이름이 없습니다")
+            }
+        }
+    }
     fun toCommand(customerId: String): KimsDrugHistorySendRequest{
         val dataType = KimsInputType.OCR.ordinal
-        val rrn = patientRrn.value ?: throw JphBizException(ErrorCode.INPUT_NOT_VALID, "환자 주민 번호 없음")
-        val name = patientName.value ?: throw JphBizException(ErrorCode.INPUT_NOT_VALID, "환자 이름 없음")
-        val nursingInstNumber = nursingInstNumber.value ?: throw JphBizException(ErrorCode.INPUT_NOT_VALID, "처방 병원 요양 기관 번호 없음")
-        val medicalInstName = medicalInstName.value ?: throw JphBizException(ErrorCode.INPUT_NOT_VALID, "처방 병원 이름 없음")
-        val issuanceDate = issuanceDate.value ?: throw JphBizException(ErrorCode.INPUT_NOT_VALID, "처방 발행일 없음")
+
         val internalDrugs = internalPrescriptionContents.map {
+            it.validate()
             KimsDrugHistorySendRequest.RxDrug.ofInternal(it)
         }
         val injectionDrugs = injectionPrescriptionContents.map {
+            it.validate()
             KimsDrugHistorySendRequest.RxDrug.ofInjection(it)
         }
         return KimsDrugHistorySendRequest(
             custID = customerId,
             dataType = dataType,
             rxData = KimsDrugHistorySendRequest.RxData(
-                patientNo = rrn,
-                patientName = name,
+                patientNo = patientRrn ?: throw JphBizException(ErrorCode.INPUT_NOT_VALID, "환자 주민번호가 없습니다"),
+                patientName = patientName ?: throw JphBizException(ErrorCode.INPUT_NOT_VALID, "환자 이름이 없습니다"),
                 prescriptions = listOf(
                     KimsDrugHistorySendRequest.RxPrescription(
-                        hospNum = nursingInstNumber,
-                        hospName = medicalInstName,
-                        hospDate = issuanceDate,
-                        pharmaDate = issuanceDate,
+                        hospNum = nursingInstNumber ?: throw JphBizException(ErrorCode.INPUT_NOT_VALID, "요양기관 변호가 없습니다"),
+                        hospName = medicalInstName ?: throw JphBizException(ErrorCode.INPUT_NOT_VALID, "처방 병원이 없습니다"),
+                        hospDate = issuanceDate.toString(),
+                        pharmaDate = issuanceDate.toString(),
                         drugs = internalDrugs + injectionDrugs
                     )
                 )

@@ -1,6 +1,7 @@
 package com.jeekim.server.jphappapi.client.kims.data
 
 import com.jeekim.server.jphappapi.data.MyDrugHistory
+import com.jeekim.server.jphappapi.data.OcrCheckedRequest
 import com.jeekim.server.jphappapi.data.UserInfo
 import com.jeekim.server.jphappapi.model.KimsInputType
 import com.jeekim.server.jphappapi.model.prescription.PrescriptionContent
@@ -42,24 +43,24 @@ data class KimsDrugHistorySendRequest (
                 )
             }
 
-            fun ofInternal(drug: PrescriptionContent): RxDrug{
+            fun ofInternal(drug: OcrCheckedRequest.PrescriptionContentRequest): RxDrug{
                 return RxDrug(
                     rxType = 0,
-                    drugCode = drug.drugCode.value.toString(),
-                    drugName = drug.drugName.value.toString(),
-                    quantity = drug.oneDose.value.toDouble(),
-                    frequency = drug.dosingPerDay.value.toInt(),
-                    dayCount = drug.totalDosingDays.value.toInt()
+                    drugCode = checkNotNull(drug.drugCode),
+                    drugName = checkNotNull(drug.drugName),
+                    quantity = drug.oneDose.toDouble(),
+                    frequency = drug.dosingPerDay.toInt(),
+                    dayCount = drug.totalDosingDays.toInt()
                 )
             }
-            fun ofInjection(drug: PrescriptionContent): RxDrug{
+            fun ofInjection(drug: OcrCheckedRequest.PrescriptionContentRequest): RxDrug{
                 return RxDrug(
                     rxType = 2,
-                    drugCode = drug.drugCode.value.toString(),
-                    drugName = drug.drugName.value.toString(),
-                    quantity = drug.oneDose.value.toDouble(),
-                    frequency = drug.dosingPerDay.value.toInt(),
-                    dayCount = drug.totalDosingDays.value.toInt()
+                    drugCode = checkNotNull(drug.drugCode),
+                    drugName = checkNotNull(drug.drugName),
+                    quantity = drug.oneDose.toDouble(),
+                    frequency = drug.dosingPerDay.toInt(),
+                    dayCount = drug.totalDosingDays.toInt()
                 )
             }
         }
