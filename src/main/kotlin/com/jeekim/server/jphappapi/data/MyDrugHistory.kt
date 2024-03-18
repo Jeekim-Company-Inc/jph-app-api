@@ -28,7 +28,7 @@ data class MyDrugHistory (
         val no : String,
         @Schema(description = "약 이름")
         @JsonProperty("medicine")
-        val medicine: String,
+        val medicine: String?,
         @Schema(description = "약 효능")
         @JsonProperty("medicinalEffect")
         val medicinalEffect: String,
@@ -37,7 +37,7 @@ data class MyDrugHistory (
         val ingredient: String,
         @Schema(description = "약 코드")
         @JsonProperty("medicineCode")
-        val medicineCode: String,
+        val medicineCode: String?,
         @Schema(description = "약 단위")
         @JsonProperty("unit")
         val unit: String,

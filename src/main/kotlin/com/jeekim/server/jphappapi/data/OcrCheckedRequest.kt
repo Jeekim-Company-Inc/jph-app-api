@@ -5,7 +5,6 @@ import com.jeekim.server.jphappapi.client.kims.data.KimsDrugHistorySendRequest
 import com.jeekim.server.jphappapi.exception.ErrorCode
 import com.jeekim.server.jphappapi.exception.JphBizException
 import com.jeekim.server.jphappapi.model.KimsInputType
-import com.jeekim.server.jphappapi.model.prescription.Bbox
 import java.time.LocalDate
 
 data class OcrCheckedRequest (
@@ -40,6 +39,14 @@ data class OcrCheckedRequest (
     @JsonProperty("fileKey")
     val fileKey: String? = null,
 ){
+    fun validate(){
+        this.injectionPrescriptionContents = this.injectionPrescriptionContents.filter {
+            it.drugCode != null && it.drugName != null
+        }
+        this.internalPrescriptionContents = this.internalPrescriptionContents.filter {
+            it.drugCode != null && it.drugName != null
+        }
+    }
     data class PrescriptionContentRequest(
         val selfPayRateCode: String,
         val drugCode: String?,
@@ -47,22 +54,14 @@ data class OcrCheckedRequest (
         val oneDose: String,
         val dosingPerDay: String,
         val totalDosingDays: String
-    ){
-        fun validate(){
-            if(drugCode.isNullOrBlank() || drugName.isNullOrBlank()){
-                throw JphBizException(ErrorCode.INPUT_NOT_VALID, "약 코드 또는 약 이름이 없습니다")
-            }
-        }
-    }
+    )
     fun toCommand(customerId: String): KimsDrugHistorySendRequest{
         val dataType = KimsInputType.OCR.ordinal
 
         val internalDrugs = internalPrescriptionContents.map {
-            it.validate()
             KimsDrugHistorySendRequest.RxDrug.ofInternal(it)
         }
         val injectionDrugs = injectionPrescriptionContents.map {
-            it.validate()
             KimsDrugHistorySendRequest.RxDrug.ofInjection(it)
         }
         return KimsDrugHistorySendRequest(

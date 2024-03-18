@@ -45,23 +45,6 @@ data class InfotechSmsRequest (
                 userData = null
             )
         }
-
-        fun of(request: SmsVerifyRequest): InfotechSmsRequest{
-            val now = LocalDate.now()
-            return InfotechSmsRequest(
-                affix = request.phoneNumber,
-                step = SmsType.SEND.step,
-                name = request.name,
-                mobileNo = request.phoneNumber,
-                ssn1 = request.rrnFirst,
-                ssn2 = request.rrnSecond,
-                sdate = now.minusYears(1).format(DateTimeFormatter.ofPattern("yyyyMMdd")),
-                edate = now.format(DateTimeFormatter.ofPattern("yyyyMMdd")),
-                step_input = request.stepInput,
-                mobileCo = request.mobileCo.name,
-                userData = request.userData
-            )
-        }
         fun of(request: GetMyDrugHistoriesBySmsRequest): InfotechSmsRequest{
             val now = LocalDate.now()
             return InfotechSmsRequest(

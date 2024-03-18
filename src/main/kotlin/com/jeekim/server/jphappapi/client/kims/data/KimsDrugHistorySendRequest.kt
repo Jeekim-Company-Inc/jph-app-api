@@ -25,8 +25,8 @@ data class KimsDrugHistorySendRequest (
     )
     data class RxDrug(
         val rxType: Int,
-        val drugCode: String,
-        val drugName: String,
+        val drugCode: String?,
+        val drugName: String?,
         val quantity: Double,
         val frequency: Int,
         val dayCount: Int
@@ -46,8 +46,8 @@ data class KimsDrugHistorySendRequest (
             fun ofInternal(drug: OcrCheckedRequest.PrescriptionContentRequest): RxDrug{
                 return RxDrug(
                     rxType = 0,
-                    drugCode = checkNotNull(drug.drugCode),
-                    drugName = checkNotNull(drug.drugName),
+                    drugCode = drug.drugCode,
+                    drugName = drug.drugName,
                     quantity = drug.oneDose.toDouble(),
                     frequency = drug.dosingPerDay.toInt(),
                     dayCount = drug.totalDosingDays.toInt()
@@ -56,8 +56,8 @@ data class KimsDrugHistorySendRequest (
             fun ofInjection(drug: OcrCheckedRequest.PrescriptionContentRequest): RxDrug{
                 return RxDrug(
                     rxType = 2,
-                    drugCode = checkNotNull(drug.drugCode),
-                    drugName = checkNotNull(drug.drugName),
+                    drugCode = drug.drugCode,
+                    drugName = drug.drugName,
                     quantity = drug.oneDose.toDouble(),
                     frequency = drug.dosingPerDay.toInt(),
                     dayCount = drug.totalDosingDays.toInt()

@@ -48,7 +48,7 @@ class DrugController(
         return drugService.getMyDrugHistoriesByEasyLogin(request).toResponse(userInfo)
     }
     @PostMapping("/sms/send")
-    @Operation(summary = "SMS 보안코드 전송")
+    @Operation(summary = "SMS 문자 전송")
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "OK"),
@@ -58,18 +58,6 @@ class DrugController(
     )
     fun smsSend(@Valid @RequestBody(required = true) request: SmsSendRequest): SmsSendResponse {
         return drugService.sendSms(request)
-    }
-    @PostMapping("/sms/verify")
-    @Operation(summary = "SMS 보안코드 검증 및 문자 전송")
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "OK", content = [Content(schema = Schema(implementation = SmsVerifyResponse::class))]),
-            ApiResponse(responseCode = "400", description = "[200004] 보안 코드 불일치 \n\n [300001] 입력값이 올바르지 않습니다.", content = [Content(schema = Schema(implementation = ErrorResponse::class))]),
-            ApiResponse(responseCode = "500", description = "[200001] 인포텍 API 호출 에러", content = [Content(schema = Schema(implementation = ErrorResponse::class))])
-        ]
-    )
-    fun smsVerify(@Valid @RequestBody(required = true) request: SmsVerifyRequest): SmsVerifyResponse {
-        return drugService.verifySms(request)
     }
 
     @PostMapping("/sms")
@@ -110,6 +98,7 @@ class DrugController(
     )
     @PostMapping("/ocr/send")
     fun sendMyDrugHistoriesByOCR(@RequestBody request: OcrCheckedRequest){
+        request.validate()
         drugService.sendMyDrugHistoriesByOcr(request)
     }
 

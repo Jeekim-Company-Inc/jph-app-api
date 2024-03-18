@@ -42,21 +42,6 @@ class DrugService(
         return result
     }
 
-    fun verifySms(request: SmsVerifyRequest): SmsVerifyResponse {
-        val smsSendRequest = InfotechSmsRequest.of(request)
-        val result = runCatching { infotechAdapter.verifySms(smsSendRequest) }.getOrNull()
-            ?: throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
-        val errYn = result.out.errYn
-        val errMsg = result.out.errMsg
-        logger().info("errYn: $errYn, errMsg: $errMsg")
-        if(errYn == "Y"){
-            if(errMsg.contains("I0001-004")){
-                throw JphBizException(ErrorCode.SECURITY_CODE_NOT_MATCH)
-            }
-            throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
-        }
-        return result
-    }
     fun getMyDrugHistoriesBySmsLogin(request: GetMyDrugHistoriesBySmsRequest): InfotechMyDrugHistoriesResponse {
         val smsLoginRequest = InfotechSmsRequest.of(request)
         val result = runCatching { infotechAdapter.getMyDrugHistoriesBySmsLogin(smsLoginRequest) }.getOrNull()
