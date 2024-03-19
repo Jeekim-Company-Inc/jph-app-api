@@ -4,11 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.jeekim.server.jphappapi.exception.AuthException
 import com.jeekim.server.jphappapi.exception.ErrorCode
 import com.jeekim.server.jphappapi.exception.ErrorResponse
-import com.jeekim.server.jphappapi.service.AuthService
+import com.jeekim.server.jphappapi.utils.Hospital.HOSPITAL_MAP
 import com.jeekim.server.jphappapi.utils.logger
 import org.springframework.core.annotation.Order
-import org.springframework.data.jpa.domain.AbstractPersistable_.id
-import org.springframework.http.HttpHeaders
 
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
@@ -22,7 +20,6 @@ import javax.servlet.http.HttpServletResponse
 @Component
 @Order(3)
 class AuthorizationFilter(
-    private val authService: AuthService
 ) : OncePerRequestFilter() {
     override fun doFilterInternal(
         request: HttpServletRequest,
@@ -61,7 +58,7 @@ class AuthorizationFilter(
     }
 
     private fun checkHospitalKey(request: HttpServletRequest, id: String){
-        authService.existsHospital(id)
+        HOSPITAL_MAP[id] ?: throw AuthException(ErrorCode.HOSPITAL_NOT_FOUND)
         request.setAttribute("id", id)
     }
 }

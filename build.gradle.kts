@@ -28,8 +28,6 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign:3.1.8")
     implementation ("org.springdoc:springdoc-openapi-ui:1.6.11")
     implementation("org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("mysql:mysql-connector-java:8.0.33")
     implementation("io.jsonwebtoken:jjwt-api:0.11.2") // Add the jjwt-api dependency
     implementation("io.jsonwebtoken:jjwt-impl:0.11.2") // Add the jjwt-impl dependency
     implementation("io.jsonwebtoken:jjwt-jackson:0.11.2") // Add the jjwt-jackson dependency

@@ -1,7 +1,9 @@
 package com.jeekim.server.jphappapi.controller
 
 import com.jeekim.server.jphappapi.data.LoginRequest
-import com.jeekim.server.jphappapi.service.HospitalService
+import com.jeekim.server.jphappapi.exception.ErrorCode
+import com.jeekim.server.jphappapi.exception.JphBizException
+import com.jeekim.server.jphappapi.utils.Hospital.HOSPITAL_MAP
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
@@ -15,10 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/hospital")
 @Tag(name = "병원 API", description = "병원 API")
-class HospitalController(
-    private val hospitalService: HospitalService,
-
-) {
+class HospitalController{
     @PostMapping("/login")
     @Operation(summary = "병원 로그인")
     @ApiResponses(
@@ -26,6 +25,12 @@ class HospitalController(
         ApiResponse(responseCode = "401", description = "[000003] 병원코드 불일치")
     )
     fun login(@RequestBody request: LoginRequest){
-        hospitalService.login(request.id, request.code)
+        val id = request.id
+        val code = request.code
+        HOSPITAL_MAP[id]?.let {
+            if (it != code) {
+                throw JphBizException(ErrorCode.HOSPITAL_CODE_NOT_MATCH)
+            }
+        } ?: throw JphBizException(ErrorCode.HOSPITAL_NOT_FOUND)
     }
 }
