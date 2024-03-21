@@ -5,6 +5,7 @@ import com.jeekim.server.jphappapi.client.kims.data.KimsDrugHistorySendRequest
 import com.jeekim.server.jphappapi.exception.ErrorCode
 import com.jeekim.server.jphappapi.exception.JphBizException
 import com.jeekim.server.jphappapi.model.KimsInputType
+import org.jetbrains.annotations.NotNull
 import java.time.LocalDate
 
 data class OcrCheckedRequest (
@@ -13,6 +14,7 @@ data class OcrCheckedRequest (
     @JsonProperty("patientName")
     val patientName: String?,
     @JsonProperty("issuanceDate")
+    @field:NotNull
     val issuanceDate: LocalDate,
     @JsonProperty("issuanceNumber")
     val issuanceNumber: String?,
@@ -33,9 +35,9 @@ data class OcrCheckedRequest (
     @JsonProperty("prescriptionRef")
     val prescriptionRef: String?,
     @JsonProperty("internalPrescriptionContents")
-    var internalPrescriptionContents: List<PrescriptionContentRequest> = emptyList(),
+    var internalPrescriptionContents: List<PrescriptionContentRequest>,
     @JsonProperty("injectionPrescriptionContents")
-    var injectionPrescriptionContents: List<PrescriptionContentRequest> = emptyList(),
+    var injectionPrescriptionContents: List<PrescriptionContentRequest>,
     @JsonProperty("fileKey")
     val fileKey: String? = null,
 ){

@@ -1,10 +1,9 @@
 package com.jeekim.server.jphappapi.client.kims.data
 
-import com.jeekim.server.jphappapi.data.MyDrugHistory
+import com.jeekim.server.jphappapi.data.MyDrugHistoryRequest
 import com.jeekim.server.jphappapi.data.OcrCheckedRequest
 import com.jeekim.server.jphappapi.data.UserInfo
 import com.jeekim.server.jphappapi.model.KimsInputType
-import com.jeekim.server.jphappapi.model.prescription.PrescriptionContent
 
 data class KimsDrugHistorySendRequest (
     val custID: String,
@@ -32,7 +31,7 @@ data class KimsDrugHistorySendRequest (
         val dayCount: Int
     ){
         companion object {
-            fun ofApi(drug: MyDrugHistory.Drug): RxDrug {
+            fun ofApi(drug: MyDrugHistoryRequest.Drug): RxDrug {
                 return RxDrug(
                     rxType = -1,
                     drugCode = drug.medicineCode,
@@ -66,7 +65,7 @@ data class KimsDrugHistorySendRequest (
         }
     }
     companion object {
-        fun of(userInfo: UserInfo, drugHistory: List<MyDrugHistory>, hospitalId: String): KimsDrugHistorySendRequest {
+        fun of(userInfo: UserInfo, drugHistory: List<MyDrugHistoryRequest>, hospitalId: String): KimsDrugHistorySendRequest {
             return KimsDrugHistorySendRequest(
                 custID = hospitalId,
                 dataType = KimsInputType.API.ordinal,

@@ -7,7 +7,7 @@ data class GetMyDrugHistoriesResponse (
     @Schema(description = "사용자 정보")
     val userInfo: UserInfo,
     @Schema(description = "처방 이력")
-    val drugHistories: List<MyDrugHistory>
+    val drugHistories: List<MyDrugHistoryResponse>
 ){
 
 }

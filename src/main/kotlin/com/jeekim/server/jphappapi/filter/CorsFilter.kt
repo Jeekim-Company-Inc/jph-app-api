@@ -13,10 +13,6 @@ import org.slf4j.LoggerFactory
 @Component
 @Order(1)
 class CorsFilter : OncePerRequestFilter() {
-    companion object {
-        private const val ORIGIN = "origin"
-        private val logger = LoggerFactory.getLogger(CorsFilter::class.java)
-    }
 
     @Throws(ServletException::class)
     override fun doFilterInternal(
@@ -39,13 +35,16 @@ class CorsFilter : OncePerRequestFilter() {
     }
 
     private fun getOrigin(request: HttpServletRequest): String? {
-        val origin = request.getHeader(ORIGIN)
+        val origin = request.getHeader("origin")
         return if (origin != null && isJeekimDomain(origin)) {
             origin
         } else null
     }
 
     private fun isJeekimDomain(origin: String): Boolean {
-        return origin.contains("jeekim.co.kr") || origin.contains("jeekim.company") || origin.contains("localhost:3000") || origin.contains("jeekim-server.com")
+        return origin.contains("jeekim.co.kr")
+                || origin.contains("jeekim.company")
+                || origin.contains("localhost:3000")
+                || origin.contains("jeekim-server.com")
     }
 }

@@ -14,13 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody
 )
 interface KimsClient {
 
-    @PostMapping("/SelfMedi/SetRxData")
+    @PostMapping("/RxData/Set")
     fun sendMyDrugHistories(
         @RequestBody request: KimsDrugHistorySendRequest
     )
-
-    @PostMapping("/SelfMedi/CheckRxData")
-    fun checkMyDrugSend(
-        @RequestBody request: KimsSendCheckHistoryRequeset
-    ): JsonNode
 }

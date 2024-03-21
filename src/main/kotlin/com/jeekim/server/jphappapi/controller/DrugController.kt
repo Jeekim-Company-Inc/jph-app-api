@@ -1,16 +1,12 @@
 package com.jeekim.server.jphappapi.controller
 
-import com.fasterxml.jackson.databind.JsonNode
 import com.jeekim.server.jphappapi.data.GetMyDrugHistoriesByKakaoRequest
 import com.jeekim.server.jphappapi.data.GetMyDrugHistoriesBySmsRequest
 import com.jeekim.server.jphappapi.data.GetMyDrugHistoriesResponse
-import com.jeekim.server.jphappapi.data.KimsSendCheckRequeset
 import com.jeekim.server.jphappapi.data.OcrCheckedRequest
 import com.jeekim.server.jphappapi.data.SendMyDrugHistoriesRequest
 import com.jeekim.server.jphappapi.data.SmsSendRequest
-import com.jeekim.server.jphappapi.data.SmsSendResponse
-import com.jeekim.server.jphappapi.data.SmsVerifyRequest
-import com.jeekim.server.jphappapi.data.SmsVerifyResponse
+import com.jeekim.server.jphappapi.client.infotech.data.SmsSendResponse
 import com.jeekim.server.jphappapi.exception.ErrorResponse
 import com.jeekim.server.jphappapi.service.DrugService
 import io.swagger.v3.oas.annotations.Operation
@@ -85,7 +81,7 @@ class DrugController(
         ]
     )
     @PostMapping("/api/send")
-    fun sendMyDrugHistoriesByApi(@RequestBody request: SendMyDrugHistoriesRequest) {
+    fun sendMyDrugHistoriesByApi(@RequestBody @Valid request: SendMyDrugHistoriesRequest) {
         drugService.sendMyDrugHistoriesByApi(request)
     }
     @Operation(summary = "내가 먹은 약 KIMS 전송 - OCR")
@@ -97,23 +93,8 @@ class DrugController(
         ]
     )
     @PostMapping("/ocr/send")
-    fun sendMyDrugHistoriesByOCR(@RequestBody request: OcrCheckedRequest){
+    fun sendMyDrugHistoriesByOCR(@RequestBody @Valid request: OcrCheckedRequest){
         request.validate()
         drugService.sendMyDrugHistoriesByOcr(request)
-    }
-
-    @Operation(summary = "내가 먹은 약 전송 확인 - 개발용으로만, deprecate 예정")
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "OK"),
-            ApiResponse(responseCode = "400", description = "[300001] 입력값이 올바르지 않습니다.", content = [Content(schema = Schema(implementation = ErrorResponse::class))]),
-            ApiResponse(responseCode = "500", description = "[200003] 킴스 API 호출 에러", content = [Content(schema = Schema(implementation = ErrorResponse::class))])
-        ]
-    )
-    @PostMapping("/check")
-    fun checkMySend(
-        @RequestBody request: KimsSendCheckRequeset
-    ) : JsonNode{
-        return drugService.checkKimsSend(request.createRrn())
     }
 }

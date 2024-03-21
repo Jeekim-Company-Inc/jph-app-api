@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(description = "약 처방 내역")
-data class MyDrugHistory (
+data class MyDrugHistoryResponse (
     @Schema(description = "순번")
     @JsonProperty("no")
     val no: String,
@@ -37,7 +37,7 @@ data class MyDrugHistory (
         val ingredient: String,
         @Schema(description = "약 코드")
         @JsonProperty("medicineCode")
-        val medicineCode: String?,
+        val medicineCode: String,
         @Schema(description = "약 단위")
         @JsonProperty("unit")
         val unit: String,

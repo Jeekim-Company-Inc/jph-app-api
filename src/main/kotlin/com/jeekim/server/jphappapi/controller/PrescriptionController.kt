@@ -1,12 +1,9 @@
 package com.jeekim.server.jphappapi.controller
 
 import com.jeekim.server.jphappapi.data.OcrResponse
-import com.jeekim.server.jphappapi.data.OcrCheckedRequest
-import com.jeekim.server.jphappapi.data.OcrRequest
 import com.jeekim.server.jphappapi.exception.ErrorCode
 import com.jeekim.server.jphappapi.exception.ErrorResponse
 import com.jeekim.server.jphappapi.exception.JphBizException
-import com.jeekim.server.jphappapi.service.DrugService
 import com.jeekim.server.jphappapi.service.PrescriptionService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -17,7 +14,6 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestAttribute
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController

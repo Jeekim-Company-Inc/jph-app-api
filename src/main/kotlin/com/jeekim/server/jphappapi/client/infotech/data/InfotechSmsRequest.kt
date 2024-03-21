@@ -3,7 +3,6 @@ package com.jeekim.server.jphappapi.client.infotech.data
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.jeekim.server.jphappapi.data.GetMyDrugHistoriesBySmsRequest
 import com.jeekim.server.jphappapi.data.SmsSendRequest
-import com.jeekim.server.jphappapi.data.SmsVerifyRequest
 import com.jeekim.server.jphappapi.model.SmsType
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

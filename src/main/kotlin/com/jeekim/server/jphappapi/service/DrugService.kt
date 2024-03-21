@@ -11,12 +11,9 @@ import com.jeekim.server.jphappapi.data.GetMyDrugHistoriesBySmsRequest
 import com.jeekim.server.jphappapi.data.OcrCheckedRequest
 import com.jeekim.server.jphappapi.data.SendMyDrugHistoriesRequest
 import com.jeekim.server.jphappapi.data.SmsSendRequest
-import com.jeekim.server.jphappapi.data.SmsSendResponse
-import com.jeekim.server.jphappapi.data.SmsVerifyRequest
-import com.jeekim.server.jphappapi.data.SmsVerifyResponse
+import com.jeekim.server.jphappapi.client.infotech.data.SmsSendResponse
 import com.jeekim.server.jphappapi.exception.ErrorCode
 import com.jeekim.server.jphappapi.exception.JphBizException
-import com.jeekim.server.jphappapi.utils.logger
 import org.springframework.stereotype.Service
 
 @Service
@@ -27,35 +24,19 @@ class DrugService(
 
     fun getMyDrugHistoriesByEasyLogin(request: GetMyDrugHistoriesByKakaoRequest): InfotechMyDrugHistoriesResponse {
         val easyLoginRequest = InfotechEasyRequest.of(request)
-        return runCatching { infotechAdapter.getMyDrugHistoriesByEasyLogin(easyLoginRequest) }.getOrNull()
-            ?: throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
+        val result = runCatching { infotechAdapter.getMyDrugHistoriesByEasyLogin(easyLoginRequest) }
+        return processInfotechResponse(result)
+    }
+    fun getMyDrugHistoriesBySmsLogin(request: GetMyDrugHistoriesBySmsRequest): InfotechMyDrugHistoriesResponse {
+        val smsLoginRequest = InfotechSmsRequest.of(request)
+        val result = runCatching { infotechAdapter.getMyDrugHistoriesBySmsLogin(smsLoginRequest) }
+        return processInfotechResponse(result)
     }
 
     fun sendSms(request: SmsSendRequest): SmsSendResponse {
         val smsSendRequest = InfotechSmsRequest.of(request)
-        val result = runCatching { infotechAdapter.sendSms(smsSendRequest) }.getOrNull()
-            ?: throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
-        val errYn = result.out.errYn
-        if(errYn == "Y"){
-            throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
-        }
-        return result
-    }
-
-    fun getMyDrugHistoriesBySmsLogin(request: GetMyDrugHistoriesBySmsRequest): InfotechMyDrugHistoriesResponse {
-        val smsLoginRequest = InfotechSmsRequest.of(request)
-        val result = runCatching { infotechAdapter.getMyDrugHistoriesBySmsLogin(smsLoginRequest) }.getOrNull()
-            ?: throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
-        val errYn = result.out.errYn
-        val errMsg = result.out.errMsg
-        if(errYn == "Y"){
-            if(errMsg.contains("I0001-004")){
-                throw JphBizException(ErrorCode.SMS_CODE_NOT_MATCH)
-            }
-            throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
-        }
-        return result
-
+        val result = runCatching { infotechAdapter.sendSms(smsSendRequest) }
+        return processInfotechSendResponse(result)
     }
 
     fun sendMyDrugHistoriesByApi(request: SendMyDrugHistoriesRequest){
@@ -67,7 +48,31 @@ class DrugService(
         kimsAdapter.sendMyDrugHistories(sendRequest)
     }
 
-    fun checkKimsSend(rrn: String): JsonNode{
-        return kimsAdapter.checkSend(rrn)
+    private fun processInfotechSendResponse(response: Result<SmsSendResponse>): SmsSendResponse{
+        val result = response.getOrNull()
+            ?: throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
+        val errYn = result.out.errYn
+        if(errYn == "Y"){
+            throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
+        }
+        return result
     }
+
+    private fun processInfotechResponse(response: Result<InfotechMyDrugHistoriesResponse>): InfotechMyDrugHistoriesResponse{
+        val result = response.getOrNull()
+            ?: throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
+        val errYn = result.out.errYn
+        val errMsg = result.out.errMsg
+        if(errYn == "N"){
+            return result
+        }
+        if(errMsg.contains("999")){
+            throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
+        }
+        if(errMsg.contains("I0001-004")){
+            throw JphBizException(ErrorCode.SMS_CODE_NOT_MATCH)
+        }
+        throw JphBizException(ErrorCode.INPUT_NOT_VALID)
+    }
+
 }

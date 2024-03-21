@@ -3,8 +3,7 @@ package com.jeekim.server.jphappapi.client.infotech
 import com.jeekim.server.jphappapi.client.infotech.data.InfotechEasyRequest
 import com.jeekim.server.jphappapi.client.infotech.data.InfotechMyDrugHistoriesResponse
 import com.jeekim.server.jphappapi.client.infotech.data.InfotechSmsRequest
-import com.jeekim.server.jphappapi.data.SmsSendResponse
-import com.jeekim.server.jphappapi.data.SmsVerifyResponse
+import com.jeekim.server.jphappapi.client.infotech.data.SmsSendResponse
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody
     configuration = [InfotechClientConfiguration::class]
 )
 interface InfotechClient {
-
     @PostMapping
     fun getMyDrugHistoriesEasy(
         @RequestBody request: InfotechEasyRequest
@@ -30,11 +28,4 @@ interface InfotechClient {
     fun sendSms(
         @RequestBody request: InfotechSmsRequest
     ): SmsSendResponse
-
-    @PostMapping
-    fun verifySms(
-        @RequestBody request: InfotechSmsRequest
-    ): SmsVerifyResponse
-
-
 }
