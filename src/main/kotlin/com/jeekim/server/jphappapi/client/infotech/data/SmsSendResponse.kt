@@ -12,5 +12,6 @@ data class SmsSendResponse (
         val userData: String = "",
         val captcha_img: String = "",
         val errYn: String,
+        val errMsg: String
     )
 }

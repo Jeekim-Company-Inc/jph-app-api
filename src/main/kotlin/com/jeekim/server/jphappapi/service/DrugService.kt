@@ -25,12 +25,12 @@ class DrugService(
     fun getMyDrugHistoriesByEasyLogin(request: GetMyDrugHistoriesByKakaoRequest): InfotechMyDrugHistoriesResponse {
         val easyLoginRequest = InfotechEasyRequest.of(request)
         val result = runCatching { infotechAdapter.getMyDrugHistoriesByEasyLogin(easyLoginRequest) }
-        return processInfotechResponse(result)
+        return processInfotechEasyResponse(result)
     }
     fun getMyDrugHistoriesBySmsLogin(request: GetMyDrugHistoriesBySmsRequest): InfotechMyDrugHistoriesResponse {
         val smsLoginRequest = InfotechSmsRequest.of(request)
         val result = runCatching { infotechAdapter.getMyDrugHistoriesBySmsLogin(smsLoginRequest) }
-        return processInfotechResponse(result)
+        return processInfotechSmsResponse(result)
     }
 
     fun sendSms(request: SmsSendRequest): SmsSendResponse {
@@ -52,13 +52,28 @@ class DrugService(
         val result = response.getOrNull()
             ?: throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
         val errYn = result.out.errYn
+        val errMsg = result.out.errMsg
         if(errYn == "Y"){
-            throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
+            throw JphBizException(ErrorCode.INFOTECH_API_ERROR, errMsg)
         }
         return result
     }
 
-    private fun processInfotechResponse(response: Result<InfotechMyDrugHistoriesResponse>): InfotechMyDrugHistoriesResponse{
+    private fun processInfotechSmsResponse(response: Result<InfotechMyDrugHistoriesResponse>): InfotechMyDrugHistoriesResponse{
+        val result = response.getOrNull()
+            ?: throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
+        val errYn = result.out.errYn
+        val errMsg = result.out.errMsg
+        if(errYn == "N"){
+            return result
+        }
+        if(errMsg.contains("I0001-004")){
+            throw JphBizException(ErrorCode.SMS_CODE_NOT_MATCH, errMsg)
+        }
+        throw JphBizException(ErrorCode.INPUT_NOT_VALID, errMsg)
+    }
+
+    private fun processInfotechEasyResponse(response: Result<InfotechMyDrugHistoriesResponse>): InfotechMyDrugHistoriesResponse{
         val result = response.getOrNull()
             ?: throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
         val errYn = result.out.errYn
@@ -67,12 +82,9 @@ class DrugService(
             return result
         }
         if(errMsg.contains("999")){
-            throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
+            throw JphBizException(ErrorCode.INFOTECH_API_ERROR, errMsg)
         }
-        if(errMsg.contains("I0001-004")){
-            throw JphBizException(ErrorCode.SMS_CODE_NOT_MATCH)
-        }
-        throw JphBizException(ErrorCode.INPUT_NOT_VALID)
+        throw JphBizException(ErrorCode.INPUT_NOT_VALID, errMsg)
     }
 
 }
