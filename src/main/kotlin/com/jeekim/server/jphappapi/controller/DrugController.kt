@@ -84,17 +84,4 @@ class DrugController(
     fun sendMyDrugHistoriesByApi(@RequestBody @Valid request: SendMyDrugHistoriesRequest) {
         drugService.sendMyDrugHistoriesByApi(request)
     }
-    @Operation(summary = "내가 먹은 약 KIMS 전송 - OCR")
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "OK"),
-            ApiResponse(responseCode = "400", description = "[300001] 입력값이 올바르지 않습니다.", content = [Content(schema = Schema(implementation = ErrorResponse::class))]),
-            ApiResponse(responseCode = "500", description = "[200003] 킴스 API 호출 에러", content = [Content(schema = Schema(implementation = ErrorResponse::class))])
-        ]
-    )
-    @PostMapping("/ocr/send")
-    fun sendMyDrugHistoriesByOCR(@RequestBody @Valid request: OcrCheckedRequest){
-        request.validate()
-        drugService.sendMyDrugHistoriesByOcr(request)
-    }
 }
