@@ -38,7 +38,7 @@ class JphController(
         description = "성공",
         content = [Content(array = ArraySchema(schema = Schema(implementation = ImageUrl::class)))]
     )
-    @ApiResponse(responseCode = "404", description = "[100001] 약관 폴더명 불일치 \n\n[200249] 약관 이미지 존재하지 않음")
+    @ApiResponse(responseCode = "404", description = "[100001] 약관 폴더명 불일치 \n\n[100002] 약관 이미지 존재하지 않음")
     @GetMapping("/document/terms")
     fun getTerms(@RequestParam(value = "types") types: List<String>): List<ImageUrl> {
         return documentService.getTermsImages(types)
