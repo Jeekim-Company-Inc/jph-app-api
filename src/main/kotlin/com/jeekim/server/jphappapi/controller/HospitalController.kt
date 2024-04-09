@@ -28,7 +28,7 @@ class HospitalController{
         val id = request.id
         val code = request.code
         HOSPITAL_MAP[id]?.let {
-            if (it != code) {
+            if (it.code != code) {
                 throw JphBizException(ErrorCode.HOSPITAL_CODE_NOT_MATCH)
             }
         } ?: throw JphBizException(ErrorCode.HOSPITAL_NOT_FOUND)

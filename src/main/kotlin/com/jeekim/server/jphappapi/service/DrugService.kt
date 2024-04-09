@@ -43,8 +43,9 @@ class DrugService(
         throw JphBizException(ErrorCode.INFOTECH_API_ERROR, result.out.errMsg)
     }
 
-    fun sendMyDrugHistoriesByApi(request: SendMyDrugHistoriesRequest){
-        val sendRequest = request.toCommandList("PAKUAS")
+    fun sendMyDrugHistoriesByApi(request: SendMyDrugHistoriesRequest, id: String){
+        val customerId = if(id == "test") "PAKUAS" else id
+        val sendRequest = request.toCommandList(customerId)
         kimsAdapter.sendMyDrugHistories(sendRequest)
     }
 

@@ -7,6 +7,7 @@ import com.jeekim.server.jphappapi.data.OcrCheckedRequest
 import com.jeekim.server.jphappapi.data.SendMyDrugHistoriesRequest
 import com.jeekim.server.jphappapi.data.SmsSendRequest
 import com.jeekim.server.jphappapi.client.infotech.data.SmsSendResponse
+import com.jeekim.server.jphappapi.data.UserInfo
 import com.jeekim.server.jphappapi.exception.ErrorResponse
 import com.jeekim.server.jphappapi.service.DrugService
 import io.swagger.v3.oas.annotations.Operation
@@ -16,6 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestAttribute
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -38,7 +40,8 @@ class DrugController(
        ]
     )
     fun getMyDrugHistoriesEasy(
-        @Valid @RequestBody(required = true) request: GetMyDrugHistoriesByKakaoRequest
+        @Valid @RequestBody(required = true) request: GetMyDrugHistoriesByKakaoRequest,
+        @RequestAttribute("id") id: String
     ): GetMyDrugHistoriesResponse {
         val userInfo = request.toUserInfo()
         return drugService.getMyDrugHistoriesByEasyLogin(request).toResponse(userInfo)
@@ -81,7 +84,10 @@ class DrugController(
         ]
     )
     @PostMapping("/api/send")
-    fun sendMyDrugHistoriesByApi(@RequestBody @Valid request: SendMyDrugHistoriesRequest) {
-        drugService.sendMyDrugHistoriesByApi(request)
+    fun sendMyDrugHistoriesByApi(
+        @RequestBody @Valid request: SendMyDrugHistoriesRequest,
+        @RequestAttribute("id") id: String
+    ) {
+        drugService.sendMyDrugHistoriesByApi(request, id)
     }
 }
