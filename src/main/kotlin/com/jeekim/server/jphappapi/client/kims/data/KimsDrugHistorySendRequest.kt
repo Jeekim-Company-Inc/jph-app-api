@@ -20,7 +20,8 @@ data class KimsDrugHistorySendRequest (
         val hospName: String,
         val hospDate: String,
         val pharmaDate: String,
-        val drugs: List<RxDrug>
+        val drugs: List<RxDrug>,
+        val ocrImage: String = ""
     )
     data class RxDrug(
         val rxType: Int,
