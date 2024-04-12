@@ -21,7 +21,7 @@ data class KimsDrugHistorySendRequest (
         val hospDate: String,
         val pharmaDate: String,
         val drugs: List<RxDrug>,
-        val ocrImage: String = ""
+        val ocrImageURL: String = ""
     )
     data class RxDrug(
         val rxType: Int,
