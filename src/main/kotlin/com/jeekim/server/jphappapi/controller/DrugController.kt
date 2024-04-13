@@ -3,11 +3,9 @@ package com.jeekim.server.jphappapi.controller
 import com.jeekim.server.jphappapi.data.GetMyDrugHistoriesByKakaoRequest
 import com.jeekim.server.jphappapi.data.GetMyDrugHistoriesBySmsRequest
 import com.jeekim.server.jphappapi.data.GetMyDrugHistoriesResponse
-import com.jeekim.server.jphappapi.data.OcrCheckedRequest
 import com.jeekim.server.jphappapi.data.SendMyDrugHistoriesRequest
 import com.jeekim.server.jphappapi.data.SmsSendRequest
 import com.jeekim.server.jphappapi.client.infotech.data.SmsSendResponse
-import com.jeekim.server.jphappapi.data.UserInfo
 import com.jeekim.server.jphappapi.exception.ErrorResponse
 import com.jeekim.server.jphappapi.service.DrugService
 import io.swagger.v3.oas.annotations.Operation

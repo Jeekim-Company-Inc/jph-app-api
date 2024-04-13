@@ -1,7 +1,6 @@
 package com.jeekim.server.jphappapi.client.kims.data
 
 import com.jeekim.server.jphappapi.data.MyDrugHistoryRequest
-import com.jeekim.server.jphappapi.data.OcrCheckedRequest
 import com.jeekim.server.jphappapi.data.UserInfo
 import com.jeekim.server.jphappapi.model.KimsInputType
 
@@ -40,27 +39,6 @@ data class KimsDrugHistorySendRequest (
                     quantity = drug.oneDose.toDouble(),
                     frequency = drug.numberDoseDay.toInt(),
                     dayCount = drug.totalDoseDay.toInt()
-                )
-            }
-
-            fun ofInternal(drug: OcrCheckedRequest.PrescriptionContentRequest): RxDrug{
-                return RxDrug(
-                    rxType = 0,
-                    drugCode = drug.drugCode,
-                    drugName = drug.drugName,
-                    quantity = drug.oneDose.toDouble(),
-                    frequency = drug.dosingPerDay.toInt(),
-                    dayCount = drug.totalDosingDays.toInt()
-                )
-            }
-            fun ofInjection(drug: OcrCheckedRequest.PrescriptionContentRequest): RxDrug{
-                return RxDrug(
-                    rxType = 2,
-                    drugCode = drug.drugCode,
-                    drugName = drug.drugName,
-                    quantity = drug.oneDose.toDouble(),
-                    frequency = drug.dosingPerDay.toInt(),
-                    dayCount = drug.totalDosingDays.toInt()
                 )
             }
         }

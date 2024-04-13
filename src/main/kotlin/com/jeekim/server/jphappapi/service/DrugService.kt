@@ -1,6 +1,5 @@
 package com.jeekim.server.jphappapi.service
 
-import com.fasterxml.jackson.databind.JsonNode
 import com.jeekim.server.jphappapi.client.infotech.InfotechAdapter
 import com.jeekim.server.jphappapi.client.infotech.data.InfotechEasyRequest
 import com.jeekim.server.jphappapi.client.infotech.data.InfotechMyDrugHistoriesResponse
@@ -8,7 +7,6 @@ import com.jeekim.server.jphappapi.client.infotech.data.InfotechSmsRequest
 import com.jeekim.server.jphappapi.client.kims.KimsAdapter
 import com.jeekim.server.jphappapi.data.GetMyDrugHistoriesByKakaoRequest
 import com.jeekim.server.jphappapi.data.GetMyDrugHistoriesBySmsRequest
-import com.jeekim.server.jphappapi.data.OcrCheckedRequest
 import com.jeekim.server.jphappapi.data.SendMyDrugHistoriesRequest
 import com.jeekim.server.jphappapi.data.SmsSendRequest
 import com.jeekim.server.jphappapi.client.infotech.data.SmsSendResponse
