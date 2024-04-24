@@ -1,6 +1,8 @@
 package com.jeekim.server.jphappapi.client.infotech
 
 import com.jeekim.server.jphappapi.client.infotech.data.InfotechEasyRequest
+import com.jeekim.server.jphappapi.client.infotech.data.InfotechEasyResponse
+import com.jeekim.server.jphappapi.client.infotech.data.InfotechEasyVerifyRequest
 import com.jeekim.server.jphappapi.client.infotech.data.InfotechMyDrugHistoriesResponse
 import com.jeekim.server.jphappapi.client.infotech.data.InfotechSmsRequest
 import com.jeekim.server.jphappapi.client.infotech.data.SmsSendResponse
@@ -17,6 +19,11 @@ interface InfotechClient {
     @PostMapping
     fun getMyDrugHistoriesEasy(
         @RequestBody request: InfotechEasyRequest
+    ): InfotechEasyResponse
+
+    @PostMapping
+    fun getMyDrugHistoriesEasyVerify(
+        @RequestBody request: InfotechEasyVerifyRequest
     ): InfotechMyDrugHistoriesResponse
 
     @PostMapping

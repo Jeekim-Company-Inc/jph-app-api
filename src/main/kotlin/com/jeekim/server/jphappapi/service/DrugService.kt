@@ -2,6 +2,8 @@ package com.jeekim.server.jphappapi.service
 
 import com.jeekim.server.jphappapi.client.infotech.InfotechAdapter
 import com.jeekim.server.jphappapi.client.infotech.data.InfotechEasyRequest
+import com.jeekim.server.jphappapi.client.infotech.data.InfotechEasyResponse
+import com.jeekim.server.jphappapi.client.infotech.data.InfotechEasyVerifyRequest
 import com.jeekim.server.jphappapi.client.infotech.data.InfotechMyDrugHistoriesResponse
 import com.jeekim.server.jphappapi.client.infotech.data.InfotechSmsRequest
 import com.jeekim.server.jphappapi.client.kims.KimsAdapter
@@ -10,6 +12,7 @@ import com.jeekim.server.jphappapi.data.GetMyDrugHistoriesBySmsRequest
 import com.jeekim.server.jphappapi.data.SendMyDrugHistoriesRequest
 import com.jeekim.server.jphappapi.data.SmsSendRequest
 import com.jeekim.server.jphappapi.client.infotech.data.SmsSendResponse
+import com.jeekim.server.jphappapi.data.GetMyDrugHistoriesByKakaoVerifyRequest
 import com.jeekim.server.jphappapi.exception.ErrorCode
 import com.jeekim.server.jphappapi.exception.JphBizException
 import org.springframework.stereotype.Service
@@ -20,9 +23,16 @@ class DrugService(
     private val infotechAdapter: InfotechAdapter,
 ) {
 
-    fun getMyDrugHistoriesByEasyLogin(request: GetMyDrugHistoriesByKakaoRequest): InfotechMyDrugHistoriesResponse {
+    fun getMyDrugHistoriesByEasyLogin(request: GetMyDrugHistoriesByKakaoRequest): InfotechEasyResponse {
         val easyLoginRequest = InfotechEasyRequest.of(request)
         val result = runCatching { infotechAdapter.getMyDrugHistoriesByEasyLogin(easyLoginRequest) }.getOrNull()
+            ?: throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
+        if(result.out.errYn == "N"){ return result }
+        throw JphBizException(ErrorCode.INFOTECH_API_ERROR, result.out.errMsg)
+    }
+    fun getMyDrugHistoriesByEasyLoginVerify(request: GetMyDrugHistoriesByKakaoVerifyRequest): InfotechMyDrugHistoriesResponse {
+        val easyLoginRequest = InfotechEasyVerifyRequest.of(request)
+        val result = runCatching { infotechAdapter.getMyDrugHistoriesByEasyLoginVerify(easyLoginRequest) }.getOrNull()
             ?: throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
         if(result.out.errYn == "N"){ return result }
         throw JphBizException(ErrorCode.INFOTECH_API_ERROR, result.out.errMsg)

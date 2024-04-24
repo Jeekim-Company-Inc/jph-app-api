@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull
 import javax.validation.constraints.Pattern
 
 @Schema(description = "내 약 조회 요청")
-data class GetMyDrugHistoriesByKakaoRequest (
+data class GetMyDrugHistoriesByKakaoVerifyRequest (
     @field:Schema(description = "이름", required = true)
     @field:NotNull(message = "이름은 필수입니다.")
     val name: String,
@@ -25,4 +25,9 @@ data class GetMyDrugHistoriesByKakaoRequest (
     @field:Schema(description = "주민등록번호 뒷자리", required = true, example = "1234567")
     @field:Pattern(regexp = "^[0-9]{7}$", message = "주민등록번호 뒷자리는 7자리 숫자입니다.")
     val rrnSecond: String,
-)
+
+    @field:Schema(description = "간편 인증 유저 식별 정보 (간편 인증 API의 stepInfo 값을 그대로 넣으면 됨)", required = true)
+    val stepInfo: String,
+){
+    fun toUserInfo(): UserInfo = UserInfo(rrnFirst, rrnSecond, name)
+}

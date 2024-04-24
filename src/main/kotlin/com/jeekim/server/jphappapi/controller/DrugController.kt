@@ -2,10 +2,12 @@ package com.jeekim.server.jphappapi.controller
 
 import com.jeekim.server.jphappapi.data.GetMyDrugHistoriesByKakaoRequest
 import com.jeekim.server.jphappapi.data.GetMyDrugHistoriesBySmsRequest
-import com.jeekim.server.jphappapi.data.GetMyDrugHistoriesResponse
+import com.jeekim.server.jphappapi.data.GetMyDrugHistoriesVerifyResponse
 import com.jeekim.server.jphappapi.data.SendMyDrugHistoriesRequest
 import com.jeekim.server.jphappapi.data.SmsSendRequest
 import com.jeekim.server.jphappapi.client.infotech.data.SmsSendResponse
+import com.jeekim.server.jphappapi.data.GetEasyLoginResponse
+import com.jeekim.server.jphappapi.data.GetMyDrugHistoriesByKakaoVerifyRequest
 import com.jeekim.server.jphappapi.exception.ErrorResponse
 import com.jeekim.server.jphappapi.service.DrugService
 import io.swagger.v3.oas.annotations.Operation
@@ -29,7 +31,7 @@ class DrugController(
 ) {
 
     @PostMapping("/easy")
-    @Operation(summary = "내가 먹은 약 조회(간편 인증)")
+    @Operation(summary = "간편 인증 전송")
     @ApiResponses(
        value = [
            ApiResponse(responseCode = "200", description = "OK"),
@@ -40,10 +42,29 @@ class DrugController(
     fun getMyDrugHistoriesEasy(
         @Valid @RequestBody(required = true) request: GetMyDrugHistoriesByKakaoRequest,
         @RequestAttribute("id") id: String
-    ): GetMyDrugHistoriesResponse {
-        val userInfo = request.toUserInfo()
-        return drugService.getMyDrugHistoriesByEasyLogin(request).toResponse(userInfo)
+    ): GetEasyLoginResponse {
+        return GetEasyLoginResponse(
+            stepInfo = drugService.getMyDrugHistoriesByEasyLogin(request).out.step_data
+        )
     }
+
+    @PostMapping("/easy/send")
+    @Operation(summary = "내가 먹은 약 조회(간편 인증)")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "OK"),
+            ApiResponse(responseCode = "400", description = "[300001] 입력값이 올바르지 않습니다.", content = [Content(schema = Schema(implementation = ErrorResponse::class))]),
+            ApiResponse(responseCode = "500", description = "[200001] 인포텍 API 호출 에러", content = [Content(schema = Schema(implementation = ErrorResponse::class))])
+        ]
+    )
+    fun getMyDrugHistoriesEasySend(
+        @Valid @RequestBody(required = true) request: GetMyDrugHistoriesByKakaoVerifyRequest,
+        @RequestAttribute("id") id: String
+    ): GetMyDrugHistoriesVerifyResponse {
+        val userInfo = request.toUserInfo()
+        return drugService.getMyDrugHistoriesByEasyLoginVerify(request).toResponse(userInfo)
+    }
+
     @PostMapping("/sms/send")
     @Operation(summary = "SMS 문자 전송")
     @ApiResponses(
@@ -61,14 +82,14 @@ class DrugController(
     @Operation(summary = "내가 먹은 약 조회(SMS)")
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "OK", content = [Content(schema = Schema(implementation = GetMyDrugHistoriesResponse::class))]),
+            ApiResponse(responseCode = "200", description = "OK", content = [Content(schema = Schema(implementation = GetMyDrugHistoriesVerifyResponse::class))]),
             ApiResponse(responseCode = "400", description = "[200005] SMS 인증 코드 불일치 \n\n [300001] 입력값이 올바르지 않습니다.", content = [Content(schema = Schema(implementation = ErrorResponse::class))]),
             ApiResponse(responseCode = "500", description = "[200001] 인포텍 API 호출 에러", content = [Content(schema = Schema(implementation = ErrorResponse::class))])
         ]
     )
     fun getMyDrugHistoriesSms(
         @Valid @RequestBody(required = true) request: GetMyDrugHistoriesBySmsRequest
-    ): GetMyDrugHistoriesResponse {
+    ): GetMyDrugHistoriesVerifyResponse {
         val userInfo = request.toUserInfo()
         return drugService.getMyDrugHistoriesBySmsLogin(request).toResponse(userInfo)
     }

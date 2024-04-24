@@ -1,7 +1,7 @@
 package com.jeekim.server.jphappapi.client.infotech.data
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.jeekim.server.jphappapi.data.GetMyDrugHistoriesResponse
+import com.jeekim.server.jphappapi.data.GetMyDrugHistoriesVerifyResponse
 import com.jeekim.server.jphappapi.data.MyDrugHistoryResponse
 import com.jeekim.server.jphappapi.data.UserInfo
 import com.jeekim.server.jphappapi.exception.ErrorCode
@@ -33,12 +33,12 @@ data class InfotechMyDrugHistoriesResponse (
         )
     }
 
-    fun toResponse(userInfo: UserInfo): GetMyDrugHistoriesResponse{
+    fun toResponse(userInfo: UserInfo): GetMyDrugHistoriesVerifyResponse{
         if(resCd != "0000") throw JphBizException(ErrorCode.INFOTECH_API_ERROR, resMsg)
         if(out.errYn == "Y") throw JphBizException(ErrorCode.INFOTECH_API_ERROR, out.errMsg)
         if(out.outB0001.errYn == "Y") throw JphBizException(ErrorCode.INFOTECH_API_ERROR, out.outB0001.errMsg)
 
-        return GetMyDrugHistoriesResponse(
+        return GetMyDrugHistoriesVerifyResponse(
             userInfo = userInfo,
             drugHistories = out.outB0001.list
         )

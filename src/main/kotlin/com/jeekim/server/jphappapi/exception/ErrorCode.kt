@@ -10,7 +10,6 @@ enum class ErrorCode(
 ) {
     //인가 관련 에러
     HOSPITAL_CODE_NOT_MATCH("000003", HttpStatus.UNAUTHORIZED, "대상 병원 코드가 일치하지 않음", null),
-    HOSPITAL_NOT_ALLOWED("000004", HttpStatus.UNAUTHORIZED, "대상 병원은 허용되지 않음", null),
     HOSPITAL_NOT_FOUND("000005", HttpStatus.UNAUTHORIZED, "대상 병원을 찾을 수 없음", null),
     HEADER_NOT_FOUND("000006", HttpStatus.UNAUTHORIZED, "헤더를 찾을 수 없음", null),
 
@@ -18,14 +17,10 @@ enum class ErrorCode(
     //비즈니스 에러
     TERMS_NAME_IS_NOT_MATCH("100001", HttpStatus.BAD_REQUEST, "약관 이름이 일치하지 않음", null),
     TERMS_IMAGES_NOT_EXISTS("100002", HttpStatus.BAD_REQUEST, "약관 이미지가 존재하지 않음", null),
-    KIMS_API_INPUT_NOT_VALID("100003", HttpStatus.BAD_REQUEST, "KIMS API 입력값이 유효하지 않음", null),
-    ENCODE_FILE_ERROR("100004", HttpStatus.BAD_REQUEST, "파일 인코딩 에러", null),
 
     // 외부 호출 에러
     INFOTECH_API_ERROR("200001", HttpStatus.INTERNAL_SERVER_ERROR, "인포텍 API 호출 에러", null),
-    LOMIN_API_ERROR("200002", HttpStatus.INTERNAL_SERVER_ERROR, "로민 API 호출 에러", null),
     KIMS_API_ERROR("200003", HttpStatus.INTERNAL_SERVER_ERROR, "KIMS API 호출 에러", null),
-    SECURITY_CODE_NOT_MATCH("200004", HttpStatus.BAD_REQUEST, "보안코드가 일치하지 않음", null),
     SMS_CODE_NOT_MATCH("200005", HttpStatus.BAD_REQUEST, "SMS 인증번호가 일치하지 않음", null),
 
     // 공통 에러

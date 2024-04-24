@@ -6,7 +6,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.UUID
 
-data class InfotechEasyRequest (
+data class InfotechEasyVerifyRequest (
     val reqCd: String = UUID.randomUUID().toString(),
     val affix: String,
     val appCd: String = "JPH_APP",
@@ -20,11 +20,12 @@ data class InfotechEasyRequest (
     val ssn2: String,
     val sdate: String,
     val edate: String,
+    val step_data: String
 ){
     companion object{
-        fun of(request: GetMyDrugHistoriesByKakaoRequest): InfotechEasyRequest{
+        fun of(request: GetMyDrugHistoriesByKakaoVerifyRequest): InfotechEasyVerifyRequest{
             val now = LocalDate.now()
-            return InfotechEasyRequest(
+            return InfotechEasyVerifyRequest(
                 affix = request.phoneNumber,
                 step = request.channel,
                 name = request.name,
@@ -33,20 +34,7 @@ data class InfotechEasyRequest (
                 ssn2 = request.rrnSecond,
                 sdate = now.minusYears(1).format(DateTimeFormatter.ofPattern("yyyyMMdd")),
                 edate = now.format(DateTimeFormatter.ofPattern("yyyyMMdd")),
-            )
-        }
-
-        fun of(request: GetMyDrugHistoriesByKakaoVerifyRequest): InfotechEasyRequest{
-            val now = LocalDate.now()
-            return InfotechEasyRequest(
-                affix = request.phoneNumber,
-                step = request.channel,
-                name = request.name,
-                mobileNo = request.phoneNumber,
-                ssn1 = request.rrnFirst,
-                ssn2 = request.rrnSecond,
-                sdate = now.minusYears(1).format(DateTimeFormatter.ofPattern("yyyyMMdd")),
-                edate = now.format(DateTimeFormatter.ofPattern("yyyyMMdd")),
+                step_data = request.stepInfo
             )
         }
     }
