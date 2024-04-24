@@ -4,5 +4,5 @@ echo "Build clean" &&
 SPRING_PROFILES_ACTIVE=dev ./gradlew clean build --no-build-cache
 echo "Build finished" &&
 
-docker build --no-cache --build-arg DEPENDENCY=build/dependency -t jeekimdev/jph-dev --platform linux/amd64 -f ./Dockerfile . &&
+docker build --no-cache --build-arg DEPENDENCY=build/dependency -t jeekimdev/jph-dev --platform linux/amd64 -f ./Dockerfile-dev . &&
 docker push jeekimdev/jph-dev
