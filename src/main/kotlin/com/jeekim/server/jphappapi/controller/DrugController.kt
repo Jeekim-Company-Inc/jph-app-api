@@ -30,7 +30,7 @@ class DrugController(
     private val drugService: DrugService
 ) {
 
-    @PostMapping("/easy")
+    @PostMapping("/easy/send")
     @Operation(summary = "간편 인증 전송")
     @ApiResponses(
        value = [
@@ -48,7 +48,7 @@ class DrugController(
         )
     }
 
-    @PostMapping("/easy/send")
+    @PostMapping("/easy")
     @Operation(summary = "내가 먹은 약 조회(간편 인증)")
     @ApiResponses(
         value = [

@@ -20,7 +20,7 @@ data class InfotechEasyResponse (
         val errYn: String,
         @JsonProperty("errMsg")
         val errMsg: String,
-        @JsonProperty("outB0001")
+        @JsonProperty("step_data")
         val step_data: String
     )
 }
