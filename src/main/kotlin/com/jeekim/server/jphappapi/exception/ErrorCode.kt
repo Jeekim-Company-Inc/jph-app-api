@@ -22,6 +22,10 @@ enum class ErrorCode(
     INFOTECH_API_ERROR("200001", HttpStatus.INTERNAL_SERVER_ERROR, "인포텍 API 호출 에러", null),
     KIMS_API_ERROR("200003", HttpStatus.INTERNAL_SERVER_ERROR, "KIMS API 호출 에러", null),
     SMS_CODE_NOT_MATCH("200005", HttpStatus.BAD_REQUEST, "SMS 인증번호가 일치하지 않음", null),
+    EASY_LOGIN_INPUT_NOT_VALID("200006", HttpStatus.BAD_REQUEST, "간편 로그인 입력값이 유효하지 않음", null),
+    EASY_LOGIN_NOT_AUTHORIZED_YET("200007", HttpStatus.UNAUTHORIZED, "간편 로그인 인증 실패", null),
+    EASY_LOGIN_EXPIRED("200008", HttpStatus.UNAUTHORIZED, "간편 로그인 인증 만료", null),
+
 
     // 공통 에러
     INPUT_NOT_VALID("300001", HttpStatus.BAD_REQUEST, "입력값이 유효하지 않음", null),

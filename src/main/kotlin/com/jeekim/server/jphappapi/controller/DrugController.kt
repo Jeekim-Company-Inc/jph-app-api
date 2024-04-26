@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.bouncycastle.asn1.x500.style.RFC4519Style.description
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestAttribute
 import org.springframework.web.bind.annotation.RequestBody
@@ -35,7 +36,7 @@ class DrugController(
     @ApiResponses(
        value = [
            ApiResponse(responseCode = "200", description = "OK"),
-           ApiResponse(responseCode = "400", description = "[300001] 입력값이 올바르지 않습니다.", content = [Content(schema = Schema(implementation = ErrorResponse::class))]),
+           ApiResponse(responseCode = "400", description = "[300001] 입력값이 올바르지 않습니다.\n\n [200006] 간편 인증 정보가 정확하지 않습니다.", content = [Content(schema = Schema(implementation = ErrorResponse::class))]),
            ApiResponse(responseCode = "500", description = "[200001] 인포텍 API 호출 에러", content = [Content(schema = Schema(implementation = ErrorResponse::class))])
        ]
     )
@@ -53,7 +54,8 @@ class DrugController(
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "OK"),
-            ApiResponse(responseCode = "400", description = "[300001] 입력값이 올바르지 않습니다.", content = [Content(schema = Schema(implementation = ErrorResponse::class))]),
+            ApiResponse(responseCode = "400", description = "[300001] 입력값이 올바르지 않습니다", content = [Content(schema = Schema(implementation = ErrorResponse::class))]),
+            ApiResponse(responseCode = "401", description = "[200007] 본인 인증이 완료되지 않았습니다 \n\n[200008] 본인 인증이 만료 되었습니다", content = [Content(schema = Schema(implementation = ErrorResponse::class))]),
             ApiResponse(responseCode = "500", description = "[200001] 인포텍 API 호출 에러", content = [Content(schema = Schema(implementation = ErrorResponse::class))])
         ]
     )

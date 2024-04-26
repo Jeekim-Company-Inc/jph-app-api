@@ -28,6 +28,8 @@ class DrugService(
         val result = runCatching { infotechAdapter.getMyDrugHistoriesByEasyLogin(easyLoginRequest) }.getOrNull()
             ?: throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
         if(result.out.errYn == "N"){ return result }
+        val errorMsg = result.out.errMsg
+        if(errorMsg.contains("LOGIN-004")){ throw JphBizException(ErrorCode.EASY_LOGIN_INPUT_NOT_VALID, errorMsg) }
         throw JphBizException(ErrorCode.INFOTECH_API_ERROR, result.out.errMsg)
     }
     fun getMyDrugHistoriesByEasyLoginVerify(request: GetMyDrugHistoriesByKakaoVerifyRequest): InfotechMyDrugHistoriesResponse {
@@ -35,6 +37,8 @@ class DrugService(
         val result = runCatching { infotechAdapter.getMyDrugHistoriesByEasyLoginVerify(easyLoginRequest) }.getOrNull()
             ?: throw JphBizException(ErrorCode.INFOTECH_API_ERROR)
         if(result.out.errYn == "N"){ return result }
+        if(result.out.errMsg.contains("LOGIN-005")){ throw JphBizException(ErrorCode.EASY_LOGIN_EXPIRED, result.out.errMsg) }
+        if(result.out.errMsg.contains("LOGIN-003")){ throw JphBizException(ErrorCode.EASY_LOGIN_NOT_AUTHORIZED_YET, result.out.errMsg) }
         throw JphBizException(ErrorCode.INFOTECH_API_ERROR, result.out.errMsg)
     }
     fun getMyDrugHistoriesBySmsLogin(request: GetMyDrugHistoriesBySmsRequest): InfotechMyDrugHistoriesResponse {
