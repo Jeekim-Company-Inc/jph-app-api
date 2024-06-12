@@ -12,7 +12,7 @@ import java.util.UUID
 data class InfotechSmsRequest (
     val reqCd: String = UUID.randomUUID().toString(),
     val affix: String,
-    val appCd: String = "JPH_APP",
+    val appCd: String = "jeekim",
     val orgCd: String = "hira",
     val svcCd: String = "B0001",
     val loginMethod: String = "SMS",
