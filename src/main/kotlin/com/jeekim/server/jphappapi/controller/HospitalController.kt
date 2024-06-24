@@ -3,7 +3,7 @@ package com.jeekim.server.jphappapi.controller
 import com.jeekim.server.jphappapi.data.LoginRequest
 import com.jeekim.server.jphappapi.exception.ErrorCode
 import com.jeekim.server.jphappapi.exception.JphBizException
-import com.jeekim.server.jphappapi.utils.Hospital.HOSPITAL_MAP
+import com.jeekim.server.jphappapi.utils.Hospital.HOSPITAL
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
@@ -27,8 +27,8 @@ class HospitalController{
     fun login(@RequestBody request: LoginRequest){
         val id = request.id
         val code = request.code
-        HOSPITAL_MAP[id]?.let {
-            if (it.code != code) {
+        HOSPITAL.firstOrNull { it.id == id }?.let {
+            if(it.code != code){
                 throw JphBizException(ErrorCode.HOSPITAL_CODE_NOT_MATCH)
             }
         } ?: throw JphBizException(ErrorCode.HOSPITAL_NOT_FOUND)
