@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.jeekim.server.jphappapi.exception.AuthException
 import com.jeekim.server.jphappapi.exception.ErrorCode
 import com.jeekim.server.jphappapi.exception.ErrorResponse
-import com.jeekim.server.jphappapi.utils.Hospital.HOSPITAL_MAP
+import com.jeekim.server.jphappapi.utils.Hospital.HOSPITAL
 import com.jeekim.server.jphappapi.utils.logger
 import org.springframework.core.annotation.Order
 
@@ -58,7 +58,7 @@ class AuthorizationFilter(
     }
 
     private fun checkHospitalKey(request: HttpServletRequest, id: String){
-        HOSPITAL_MAP[id] ?: throw AuthException(ErrorCode.HOSPITAL_NOT_FOUND)
+        HOSPITAL.firstOrNull { it.id == id} ?: throw AuthException(ErrorCode.HOSPITAL_NOT_FOUND)
         request.setAttribute("id", id)
     }
 }
